@@ -1,0 +1,70 @@
+<nav aria-label="breadcrumb" class="mb-3">
+  <ol class="breadcrumb shadow-sm p-2 rounded bg-light">
+    <li class="breadcrumb-item">
+      <a href="/">Home</a>
+    </li>
+    <li class="breadcrumb-item active">
+      add Users
+    </li>
+  </ol>
+</nav>
+<div class="card shadow-sm mb-4">
+  <div class="card-header bg-primary text-white">
+    Add User
+  </div>
+
+  <div class="card-body">
+    <form method="POST" action="/adduser" novalidate>
+
+      <div class="row g-3">
+
+        <div class="col-md-6">
+          <label class="form-label">First Name</label>
+          <input
+            type="text"
+            name="first_name"
+            class="form-control"
+            placeholder="Enter first name"
+          />
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Last Name</label>
+          <input
+            type="text"
+            name="last_name"
+            class="form-control"
+            placeholder="Enter last name"
+          />
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Email</label>
+          <input
+            type="email"
+            name="email"
+            class="form-control"
+            placeholder="Enter email"
+          />
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Phone</label>
+          <input
+            type="text"
+            name="phone"
+            class="form-control"
+            placeholder="Enter phone"
+          />
+        </div>
+
+      </div>
+
+      <div class="mt-4">
+        <button class="btn btn-success" type="submit">Save</button>
+        <button type="reset" class="btn btn-secondary">Reset</button>
+      </div>
+
+    </form>
+  </div>
+</div>
