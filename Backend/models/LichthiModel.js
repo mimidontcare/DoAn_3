@@ -6,7 +6,7 @@ const Lichthi = {
   },
 
   getById: (id, callback) => {
-    db.query("SELECT * FROM lichthi WHERE GiamThi=?", [id], callback);
+    db.query("SELECT * FROM lichthi WHERE maLichThi=?", [id], callback);
   },
 
   create: (data, callback) => {
@@ -17,13 +17,13 @@ const Lichthi = {
   },
 
   update: (id, data, callback) => {
-    db.query("UPDATE lichthi SET gioThi=?, hinhThucThi=?, maLichThi=?, MaLopPhan=?, maPhong=?, NgayThi=?, phongHoc=? WHERE GiamThi=?", [data.gioThi, data.hinhThucThi, data.maLichThi, data.MaLopPhan, data.maPhong, data.NgayThi, data.phongHoc, id],
+    db.query("UPDATE lichthi SET gioThi=?, hinhThucThi=?, MaLopPhan=?, maPhong=?, NgayThi=?, phongHoc=? WHERE maLichThi=?", [data.gioThi, data.hinhThucThi, data.MaLopPhan, data.maPhong, data.NgayThi, data.phongHoc, id],
       callback
     );
   },
 
   delete: (id, callback) => {
-    db.query("DELETE FROM lichthi WHERE GiamThi=?", [id], callback);
+    db.query("DELETE FROM lichthi WHERE maLichThi=?", [id], callback);
   },
 
   search: (keyword, callback) => {

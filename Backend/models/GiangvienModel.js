@@ -6,7 +6,7 @@ const Giangvien = {
   },
 
   getById: (id, callback) => {
-    db.query("SELECT * FROM giangvien WHERE GioiTinh=?", [id], callback);
+    db.query("SELECT * FROM giangvien WHERE maGiangVien=?", [id], callback);
   },
 
   create: (data, callback) => {
@@ -17,13 +17,13 @@ const Giangvien = {
   },
 
   update: (id, data, callback) => {
-    db.query("UPDATE giangvien SET Khoa=?, maGiangVien=?, MaNguoiDung=?, Mon=?, NgaySinh=?, TenGiangVien=?, TrinhDo=? WHERE GioiTinh=?", [data.Khoa, data.maGiangVien, data.MaNguoiDung, data.Mon, data.NgaySinh, data.TenGiangVien, data.TrinhDo, id],
+    db.query("UPDATE giangvien SET Khoa=?, MaNguoiDung=?, Mon=?, NgaySinh=?, TenGiangVien=?, TrinhDo=? WHERE maGiangVien=?", [data.Khoa, data.MaNguoiDung, data.Mon, data.NgaySinh, data.TenGiangVien, data.TrinhDo, id],
       callback
     );
   },
 
   delete: (id, callback) => {
-    db.query("DELETE FROM giangvien WHERE GioiTinh=?", [id], callback);
+    db.query("DELETE FROM giangvien WHERE maGiangVien=?", [id], callback);
   },
 
   search: (keyword, callback) => {

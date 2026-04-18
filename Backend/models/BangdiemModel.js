@@ -7,24 +7,24 @@ const Bangdiem = {
   },
 
   getById: (id, callback) => {
-    db.query("SELECT * FROM bangdiem WHERE Diem = ?", [id], callback);
+    db.query("SELECT * FROM bangdiem WHERE MaBD = ?", [id], callback);
   },
 
   create: (data, callback) => {
-    db.query("INSERT INTO bangdiem (MaBD, MaDD, maLopHP, MaMonHoc, MaSinhVien) VALUES (?, ?, ?, ?, ?)",
-      [data.MaBD, data.MaDD, data.maLopHP, data.MaMonHoc, data.MaSinhVien],
+    db.query("INSERT INTO bangdiem (MaBD, MaDD, maLopHP, MaMonHoc, MaSinhVien, Diem) VALUES (?, ?, ?, ?, ?, ?)",
+      [data.MaBD, data.MaDD, data.maLopHP, data.MaMonHoc, data.MaSinhVien, data.Diem],
       callback
     );
   },
 
   update: (id, data, callback) => {
-    db.query("UPDATE bangdiem SET MaBD=?, MaDD=?, maLopHP=?, MaMonHoc=?, MaSinhVien=? WHERE Diem=?", [data.MaBD, data.MaDD, data.maLopHP, data.MaMonHoc, data.MaSinhVien, id],
+    db.query("UPDATE bangdiem SET MaDD=?, maLopHP=?, MaMonHoc=?, MaSinhVien=?, Diem=? WHERE MaBD=?", [data.MaDD, data.maLopHP, data.MaMonHoc, data.MaSinhVien, data.Diem, id],
       callback
     );
   },
 
   delete: (id, callback) => {
-    db.query("DELETE FROM bangdiem WHERE Diem=?", [id], callback);
+    db.query("DELETE FROM bangdiem WHERE MaBD=?", [id], callback);
   },
 
   search: (keyword, callback) => {
