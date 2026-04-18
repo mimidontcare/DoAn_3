@@ -45,11 +45,15 @@ export default function Page() {
     const fetchApi = async () => {
       try {
         const data = await getAll();
-        console.log(data);
-        setKhoas(data);
-        console.log(data);
-        setSelectedKhoa(data[0].maKhoa);
-        console.log(data);
+        if (Array.isArray(data)) {
+          setKhoas(data);
+          if (data.length > 0) {
+            setSelectedKhoa(data[0].maKhoa);
+          }
+        } else {
+          console.error("Lỗi: API Khoa không trả về mảng", data);
+          setKhoas([]);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -60,7 +64,12 @@ export default function Page() {
     const fetchapi = async () => {
       try {
         const data = await getAllNganh();
-        setNganhs(data);
+        if (Array.isArray(data)) {
+          setNganhs(data);
+        } else {
+          console.error("Lỗi: API Ngành không trả về mảng", data);
+          setNganhs([]);
+        }
       } catch (error) {
         console.log(error);
       }

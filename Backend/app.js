@@ -20,7 +20,7 @@ app.use("/api", verifyToken); // middleware and jwt
 
 app.use("/api/nguoidung", require("./routes/nguoidung.route"));
 app.use("/api/bangdiem", require("./routes/bangdiem.route"));
-app.use("/api/dangkyhocphan", require("./routes/dangkyhocphan.route"));
+// app.use("/api/dangkyhocphan", require("./routes/dangkyhocphan.route"));
 app.use("/api/diemdanh", require("./routes/diemdanh.route"));
 app.use("/api/khoa", require("./routes/khoa.route"));
 app.use("/api/lophocphan", require("./routes/lophocphan.route"));
