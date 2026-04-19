@@ -14,22 +14,20 @@ export default function LoginPage() {
       if (email === "" || password === "") {
         alert("Vui lòng nhập đầy đủ thông tin");
         return;
-      } else {
-        const res = await login({ email, password });
-        if (res) {
-          alert("Đăng nhập thành công");
-        } else {
-          alert("Đăng nhập thất bại");
-        }
       }
 
-      // Giả sử đăng nhập thành công, bạn có thể muốn chuyển hướng
-      // hoặc lưu trữ session/token.
-      console.log("Đăng nhập thành công");
-      router.push("/admin/dashboard"); // Chuyển hướng về trang chủ hoặc dashboard
+      const res = await login({ email, password });
+
+      if (res?.token) {
+        // Đăng nhập thành công — token đã được lưu trong loginApi.js
+        alert("Đăng nhập thành công!");
+        router.push("/admin/dashboard");
+      } else {
+        // Đăng nhập thất bại — backend trả message lỗi
+        alert("Đăng nhập thất bại: " + (res?.message || "Sai email hoặc mật khẩu"));
+      }
     } catch (error) {
-      alert("Đăng nhập thất bại :" + error);
-      // Ở đây bạn có thể xử lý lỗi đăng nhập, ví dụ: hiển thị thông báo
+      alert("Lỗi kết nối server: " + error);
     }
   };
 

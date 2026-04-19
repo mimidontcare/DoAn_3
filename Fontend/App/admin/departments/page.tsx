@@ -91,7 +91,7 @@ export default function Page() {
     return n.maKhoa === selectedKhoa;
   });
   return (
-    <div className="relative p-6 w-full h-full bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 rounded-2xl flex gap-6 overflow-hidden shadow-sm">
+    <div className="relative p-6 w-full h-full bg-gradient-to-br from-indigo-50 via-white to-blue-50 border border-indigo-100 rounded-2xl flex gap-6 overflow-hidden shadow-sm">
       {displayForm && (
         <Item_hien
           className="absolute inset-0 bg-black/50 z-50 flex items-center justify-center"
@@ -117,24 +117,24 @@ export default function Page() {
       {/* LEFT PANEL - Quản lý khoa */}
       <div className="w-[40%] h-full bg-white rounded-2xl shadow-lg border border-gray-100 flex flex-col overflow-hidden">
         {/* HEADER */}
-        <div className="p-5 border-b border-gray-100 bg-white/80 backdrop-blur-sm sticky top-0 z-10 h-[20%] ">
+        <div className="p-5 border-b border-slate-100 bg-white/80 backdrop-blur-sm sticky top-0 z-10 h-[20%]">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-bold text-gray-900 tracking-tight">
+            <h2 className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-indigo-600 tracking-tight">
               Quản lý khoa
             </h2>
-            <span className="text-sm text-gray-500 font-medium">
+            <span className="text-sm text-slate-500 font-medium bg-slate-100 px-3 py-1 rounded-full">
               {khoas.length} khoa
             </span>
           </div>
           <div className="relative">
             <Search
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
               size={18}
             />
             <input
               type="text"
               placeholder="Tìm kiếm khoa..."
-              className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all duration-200 placeholder:text-gray-400"
+              className="w-full pl-11 pr-4 py-3 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all duration-300 placeholder:text-slate-400 shadow-sm"
             />
           </div>
         </div>
@@ -196,27 +196,27 @@ export default function Page() {
         </div>
 
         {/* FOOTER */}
-        <div className="p-5 border-t border-gray-100 bg-white h-[15%]">
+        <div className="p-5 border-t border-slate-100 bg-white h-[15%]">
           <button
-            className="w-full flex items-center justify-center gap-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-3 rounded-xl font-medium shadow-md hover:shadow-lg transition-all duration-200 active:scale-[0.98]"
+            className="w-full flex items-center justify-center gap-2 px-6 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-3 rounded-xl font-semibold shadow-lg hover:shadow-indigo-500/30 transition-all duration-300 active:scale-[0.98]"
             onClick={() => {
               setDisplayForm(true);
               setSua(false);
             }}
           >
-            <Plus size={18} />
+            <Plus size={20} />
             Thêm khoa mới
           </button>
         </div>
       </div>
 
       {/* RIGHT PANEL - Quản lý ngành */}
-      <div className="w-[60%] bg-white rounded-2xl shadow-lg border border-gray-100 flex flex-col overflow-hidden">
+      <div className="w-[60%] bg-white/70 backdrop-blur-xl rounded-2xl shadow-xl border border-slate-100 flex flex-col overflow-hidden">
         {/* HEADER */}
-        <div className="p-5 border-b border-gray-100 bg-white/80 backdrop-blur-sm sticky top-0 z-10 space-y-4">
+        <div className="p-5 border-b border-slate-100 bg-white/80 backdrop-blur-sm sticky top-0 z-10 space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 tracking-tight">
+              <h2 className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-indigo-600 tracking-tight">
                 {selectedKhoa && selectedKhoaInfo
                   ? `Ngành thuộc ${selectedKhoaInfo.tenKhoa}`
                   : "Quản lý ngành"}
@@ -238,7 +238,7 @@ export default function Page() {
             </div>
 
             <button
-              className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-medium shadow-md hover:shadow-lg transition-all duration-200 active:scale-[0.98]"
+              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-semibold shadow-lg hover:shadow-indigo-500/30 transition-all duration-300 active:scale-[0.98]"
               onClick={() => {
                 if (!selectedKhoa) {
                   alert("Vui lòng chọn khoa trước khi thêm ngành");
@@ -248,35 +248,35 @@ export default function Page() {
                 setSua(false);
               }}
             >
-              <Plus size={18} />
+              <Plus size={20} />
               Thêm ngành
             </button>
           </div>
 
           <div className="relative">
             <Search
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
               size={18}
             />
             <input
               type="text"
               placeholder="Tìm kiếm ngành theo tên hoặc mã..."
-              className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-blue-400 focus:ring-4 focus:ring-blue-100 transition-all duration-200 placeholder:text-gray-400"
+              className="w-full pl-11 pr-4 py-3 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all duration-300 placeholder:text-slate-400 shadow-sm"
             />
           </div>
         </div>
 
         {/* TABLE */}
         <div className="flex-1 overflow-auto">
-          <table className="w-full text-sm text-left text-gray-700">
-            <thead className="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-200 sticky top-0">
+          <table className="w-full text-sm text-left">
+            <thead className="text-xs text-slate-500 uppercase bg-slate-50/80 sticky top-0 backdrop-blur-md border-b border-slate-200 z-10">
               <tr>
-                <th className="px-6 py-4 font-medium">Mã ngành</th>
-                <th className="px-6 py-4 font-medium">Tên ngành</th>
-                <th className="px-6 py-4 font-medium">Mã khoa</th>
-                <th className="px-6 py-4 font-medium">Trình độ</th>
-                <th className="px-6 py-4 font-medium text-center">Tín chỉ</th>
-                <th className="px-6 py-4 font-medium text-right">Thao tác</th>
+                <th className="px-6 py-5 font-semibold tracking-wider">Mã ngành</th>
+                <th className="px-6 py-5 font-semibold tracking-wider">Tên ngành</th>
+                <th className="px-6 py-5 font-semibold tracking-wider">Mã khoa</th>
+                <th className="px-6 py-5 font-semibold tracking-wider">Trình độ</th>
+                <th className="px-6 py-5 font-semibold tracking-wider text-center">Tín chỉ</th>
+                <th className="px-6 py-5 font-semibold tracking-wider text-right">Thao tác</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">

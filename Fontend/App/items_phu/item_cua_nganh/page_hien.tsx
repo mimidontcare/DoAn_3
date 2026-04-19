@@ -1,9 +1,9 @@
 "use client";
 
-import { X, Save, GraduationCap, Import } from "lucide-react";
+import { X, Save, GraduationCap } from "lucide-react";
 import { useState, useEffect } from "react";
 import { getAll } from "@/ApiCall/KhoaApi";
-import { getAllNganh } from "@/ApiCall/NganhApi";
+import { addNganh, updateNganh } from "@/ApiCall/NganhApi";
 
 type NganhForm = {
   maKhoa: string;
@@ -79,37 +79,38 @@ const ItemHien_Nganh = ({
     }));
   };
 
-  const handleSubmit = () => {
-    console.log("Ngành:", formData);
+  const handleSubmit = async () => {
+    if (!formData.maNganh || !formData.tenNganh || !formData.maKhoa) {
+      alert("Vui lòng điền đầy đủ mã ngành, tên ngành và chọn khoa");
+      return;
+    }
 
-    onSuccess?.();
-    setDisplayform?.(false);
+    try {
+      if (suaorThem && nganh) {
+        await updateNganh(nganh.maNganh, formData);
+        alert("Cập nhật ngành thành công");
+      } else {
+        await addNganh(formData);
+        alert("Thêm ngành thành công");
+      }
+      onSuccess?.();
+      setDisplayform?.(false);
+    } catch (err) {
+      console.error(err);
+      alert("Lỗi kết nối server");
+    }
   };
   const [khoas, setKhoas] = useState<formKhoa[]>([]);
-  const [nganhs, setNganhs] = useState<FormData[]>([]);
   useEffect(() => {
     const fetchApi = async () => {
       try {
         const data = await getAll();
         setKhoas(data);
-        console.log(data);
-        console.log(data);
       } catch (error) {
         console.log(error);
       }
     };
     fetchApi();
-  }, []);
-  useEffect(() => {
-    const fetchapi = async () => {
-      try {
-        const data = await getAllNganh();
-        setNganhs(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchapi();
   }, []);
   return (
     <div className={className}>

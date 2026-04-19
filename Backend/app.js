@@ -16,7 +16,7 @@ app.use(express.static("public"));
 app.use("/api/auth", require("./routes/auth.route"));
 
 // ===== PROTECTED ROUTE =====
-app.use("/api", verifyToken); // middleware and jwt
+app.use("/api", verifyToken); // jwt middleware - yêu cầu đăng nhập
 
 app.use("/api/nguoidung", require("./routes/nguoidung.route"));
 app.use("/api/bangdiem", require("./routes/bangdiem.route"));

@@ -75,15 +75,25 @@ export default function GradesPage() {
     }
     
     try {
+      let res;
       if (isEdit && formData.MaBD) {
-        await updateBangdiem(formData.MaBD, formData);
+        res = await updateBangdiem(formData.MaBD, formData);
       } else {
-        await addBangdiem(formData);
+        res = await addBangdiem(formData);
       }
-      setShowModal(false); 
+
+      // Kiểm tra nếu backend trả lỗi (sqlMessage hoặc error)
+      if (res?.sqlMessage || res?.error) {
+        alert("❌ Lỗi: " + (res.sqlMessage || res.error));
+        return;
+      }
+
+      alert(isEdit ? "✅ Cập nhật điểm thành công!" : "✅ Nhập điểm mới thành công!");
+      setShowModal(false);
       fetchData();
-    } catch (err) { 
-      alert("Lỗi lưu trữ!"); 
+    } catch (err) {
+      console.error(err);
+      alert("❌ Lỗi kết nối server!");
     }
   };
 

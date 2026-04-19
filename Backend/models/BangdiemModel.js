@@ -1,4 +1,3 @@
-const { get } = require("../app");
 const db = require("../config/db");
 
 const Bangdiem = {

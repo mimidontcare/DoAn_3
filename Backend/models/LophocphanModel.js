@@ -10,14 +10,14 @@ const Lophocphan = {
   },
 
   create: (data, callback) => {
-    db.query("INSERT INTO lophocphan (MaLopHocPhan, maLopHP, MaMonHoc, soLuongSinhVien, tenLop, thoigianDong, ThoigianMo, thuTuUuTien) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-      [data.MaLopHocPhan, data.maLopHP, data.MaMonHoc, data.soLuongSinhVien, data.tenLop, data.thoigianDong, data.ThoigianMo, data.thuTuUuTien],
+    db.query("INSERT INTO lophocphan (MaLopHocPhan, maLopHP, MaMonHoc, soLuongSinhVien, tenLop, thoigianDong, ThoigianMo, thuTuUuTien, maGiangVien) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [data.MaLopHocPhan, data.maLopHP, data.MaMonHoc, data.soLuongSinhVien, data.tenLop, data.thoigianDong, data.ThoigianMo, data.thuTuUuTien, data.maGiangVien],
       callback
     );
   },
 
   update: (id, data, callback) => {
-    db.query("UPDATE lophocphan SET MaLopHocPhan=?, maLopHP=?, MaMonHoc=?, soLuongSinhVien=?, tenLop=?, thoigianDong=?, ThoigianMo=?, thuTuUuTien=? WHERE maGiangVien=?", [data.MaLopHocPhan, data.maLopHP, data.MaMonHoc, data.soLuongSinhVien, data.tenLop, data.thoigianDong, data.ThoigianMo, data.thuTuUuTien, id],
+    db.query("UPDATE lophocphan SET MaLopHocPhan=?, maLopHP=?, MaMonHoc=?, soLuongSinhVien=?, tenLop=?, thoigianDong=?, ThoigianMo=?, thuTuUuTien=?, maGiangVien=? WHERE maGiangVien=?", [data.MaLopHocPhan, data.maLopHP, data.MaMonHoc, data.soLuongSinhVien, data.tenLop, data.thoigianDong, data.ThoigianMo, data.thuTuUuTien, data.maGiangVien, id],
       callback
     );
   },

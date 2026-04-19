@@ -134,14 +134,14 @@ export default function Item_hien({
   };
 
   return (
-    <div className={className}>
-      <div className="w-full max-w-lg mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
+    <div className={`${className} z-[100] bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200`}>
+      <div className="bg-white rounded-3xl w-full max-w-2xl shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
         {/* Header */}
 
-        <div className="px-6 py-5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white flex items-center justify-between relative">
-          <div className="flex items-center gap-3">
-            <Building2 size={24} />
-            <h2 className="text-xl font-semibold">
+        <div className="px-8 py-6 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between relative">
+          <div className="flex items-center gap-3 text-slate-800">
+            <Building2 className="text-blue-600" size={24} />
+            <h2 className="text-2xl font-bold">
               {suaorThem ? "Chỉnh sửa khoa" : "Thêm khoa mới"}
             </h2>
           </div>
@@ -149,7 +149,7 @@ export default function Item_hien({
           <button
             type="button"
             onClick={handleCancel}
-            className="absolute top-3 right-4 p-1.5 rounded-full hover:bg-white/20 transition-colors text-white"
+            className="p-2 rounded-full hover:bg-slate-200 text-slate-500 transition-colors"
           >
             <X size={20} />
           </button>
@@ -157,11 +157,11 @@ export default function Item_hien({
 
         {/* Form */}
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+        <form onSubmit={handleSubmit} className="p-8 space-y-6 flex-1 overflow-y-auto">
           {/* Mã khoa */}
 
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+          <div className="space-y-2">
+            <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
               Mã khoa <span className="text-red-500">*</span>
             </label>
 
@@ -173,16 +173,16 @@ export default function Item_hien({
                 onChange={handleChange}
                 maxLength={10}
                 placeholder="VD: CNTT"
-                className={`w-full pl-10 pr-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 ${
+                className={`w-full pl-11 pr-4 py-3 bg-slate-50 border rounded-xl text-sm focus:outline-none focus:ring-2 transition-all ${
                   errors.maKhoa
                     ? "border-red-400 focus:ring-red-200"
-                    : "border-gray-300 focus:ring-blue-100"
+                    : "border-slate-200 focus:ring-blue-500/20 focus:border-blue-500"
                 }`}
               />
 
               <Building2
                 size={18}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
               />
             </div>
 
@@ -193,8 +193,8 @@ export default function Item_hien({
 
           {/* Tên khoa */}
 
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+          <div className="space-y-2">
+            <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
               Tên khoa <span className="text-red-500">*</span>
             </label>
 
@@ -205,10 +205,10 @@ export default function Item_hien({
               onChange={handleChange}
               maxLength={100}
               placeholder="VD: Khoa Công nghệ Thông tin"
-              className={`w-full px-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 ${
+              className={`w-full px-4 py-3 bg-slate-50 border rounded-xl text-sm focus:outline-none focus:ring-2 transition-all ${
                 errors.tenKhoa
                   ? "border-red-400 focus:ring-red-200"
-                  : "border-gray-300 focus:ring-blue-100"
+                  : "border-slate-200 focus:ring-blue-500/20 focus:border-blue-500"
               }`}
             />
 
@@ -219,8 +219,8 @@ export default function Item_hien({
 
           {/* SĐT */}
 
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+          <div className="space-y-2">
+            <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
               Số điện thoại
             </label>
 
@@ -231,16 +231,16 @@ export default function Item_hien({
                 value={formData.sdt}
                 onChange={handleChange}
                 placeholder="0987654321"
-                className={`w-full pl-10 pr-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 ${
+                className={`w-full pl-11 pr-4 py-3 bg-slate-50 border rounded-xl text-sm focus:outline-none focus:ring-2 transition-all ${
                   errors.sdt
                     ? "border-red-400 focus:ring-red-200"
-                    : "border-gray-300 focus:ring-blue-100"
+                    : "border-slate-200 focus:ring-blue-500/20 focus:border-blue-500"
                 }`}
               />
 
               <Phone
                 size={18}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
               />
             </div>
 
@@ -251,8 +251,8 @@ export default function Item_hien({
 
           {/* Email */}
 
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+          <div className="space-y-2">
+            <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
               Email
             </label>
 
@@ -263,16 +263,16 @@ export default function Item_hien({
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="khoa@edu.vn"
-                className={`w-full pl-10 pr-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 ${
+                className={`w-full pl-11 pr-4 py-3 bg-slate-50 border rounded-xl text-sm focus:outline-none focus:ring-2 transition-all ${
                   errors.email
                     ? "border-red-400 focus:ring-red-200"
-                    : "border-gray-300 focus:ring-blue-100"
+                    : "border-slate-200 focus:ring-blue-500/20 focus:border-blue-500"
                 }`}
               />
 
               <Mail
                 size={18}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
               />
             </div>
 
@@ -283,8 +283,8 @@ export default function Item_hien({
 
           {/* Trưởng khoa */}
 
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+          <div className="space-y-2">
+            <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
               Trưởng khoa
             </label>
 
@@ -295,32 +295,31 @@ export default function Item_hien({
                 value={formData.TruongKhoa}
                 onChange={handleChange}
                 placeholder="Họ và tên"
-                className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-100"
+                className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
               />
 
               <User
                 size={18}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
               />
             </div>
           </div>
 
           {/* Buttons */}
 
-          <div className="flex justify-end gap-4 pt-6 border-t">
+          <div className="mt-10 pt-6 border-t border-slate-100 flex justify-end gap-3">
             <button
               type="button"
               onClick={handleCancel}
-              className="px-6 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+              className="px-6 py-3 font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition-colors"
             >
-              Thoát
+              Huỷ Bỏ
             </button>
 
             <button
               type="submit"
-              className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg flex items-center gap-2"
+              className="px-6 py-3 font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-lg hover:shadow-blue-500/30 transition-all active:scale-95 flex items-center gap-2"
             >
-              <Save size={18} />
               {suaorThem ? "Cập nhật" : "Thêm khoa"}
             </button>
           </div>
