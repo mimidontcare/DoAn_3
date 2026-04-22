@@ -6,7 +6,7 @@ const Lophocphan = {
   },
 
   getById: (id, callback) => {
-    db.query("SELECT * FROM lophocphan WHERE maGiangVien=?", [id], callback);
+    db.query("SELECT * FROM lophocphan WHERE MaLopHocPhan=?", [id], callback);
   },
 
   create: (data, callback) => {
@@ -17,13 +17,13 @@ const Lophocphan = {
   },
 
   update: (id, data, callback) => {
-    db.query("UPDATE lophocphan SET MaLopHocPhan=?, maLopHP=?, MaMonHoc=?, soLuongSinhVien=?, tenLop=?, thoigianDong=?, ThoigianMo=?, thuTuUuTien=?, maGiangVien=? WHERE maGiangVien=?", [data.MaLopHocPhan, data.maLopHP, data.MaMonHoc, data.soLuongSinhVien, data.tenLop, data.thoigianDong, data.ThoigianMo, data.thuTuUuTien, data.maGiangVien, id],
+    db.query("UPDATE lophocphan SET maLopHP=?, MaMonHoc=?, soLuongSinhVien=?, tenLop=?, thoigianDong=?, ThoigianMo=?, thuTuUuTien=?, maGiangVien=? WHERE MaLopHocPhan=?", [data.maLopHP, data.MaMonHoc, data.soLuongSinhVien, data.tenLop, data.thoigianDong, data.ThoigianMo, data.thuTuUuTien, data.maGiangVien, id],
       callback
     );
   },
 
   delete: (id, callback) => {
-    db.query("DELETE FROM lophocphan WHERE maGiangVien=?", [id], callback);
+    db.query("DELETE FROM lophocphan WHERE MaLopHocPhan=?", [id], callback);
   },
 
   search: (keyword, callback) => {

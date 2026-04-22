@@ -16,22 +16,22 @@ exports.getById = (req, res) => {
 
 exports.create = (req, res) => {
   Nguoidung.create(req.body, (err) => {
-    if (err) return res.status(500).json(err);
-    res.json({ message: "Thêm thành công" });
+    if (err) return res.status(500).json({ success: false, message: err.message });
+    res.json({ success: true, message: "Thêm thành công" });
   });
 };
 
 exports.update = (req, res) => {
   Nguoidung.update(req.params.id, req.body, (err) => {
-    if (err) return res.status(500).json(err);
-    res.json({ message: "Cập nhật thành công" });
+    if (err) return res.status(500).json({ success: false, message: err.message });
+    res.json({ success: true, message: "Cập nhật thành công" });
   });
 };
 
 exports.delete = (req, res) => {
   Nguoidung.delete(req.params.id, (err) => {
-    if (err) return res.status(500).json(err);
-    res.json({ message: "Xoá thành công" });
+    if (err) return res.status(500).json({ success: false, message: err.message });
+    res.json({ success: true, message: "Xoá thành công" });
   });
 };
 exports.getByEmail = (req, res) => {

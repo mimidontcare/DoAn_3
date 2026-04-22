@@ -16,21 +16,21 @@ exports.getById = (req, res) => {
 
 exports.create = (req, res) => {
   Lophanhchinh.create(req.body, (err) => {
-    if (err) return res.status(500).json(err);
-    res.json({ message: "Thêm thành công" });
+    if (err) return res.status(500).json({ success: false, message: err.message });
+    res.json({ success: true, message: "Thêm thành công" });
   });
 };
 
 exports.update = (req, res) => {
   Lophanhchinh.update(req.params.id, req.body, (err) => {
-    if (err) return res.status(500).json(err);
-    res.json({ message: "Cập nhật thành công" });
+    if (err) return res.status(500).json({ success: false, message: err.message });
+    res.json({ success: true, message: "Cập nhật thành công" });
   });
 };
 
 exports.delete = (req, res) => {
   Lophanhchinh.delete(req.params.id, (err) => {
-    if (err) return res.status(500).json(err);
-    res.json({ message: "Xoá thành công" });
+    if (err) return res.status(500).json({ success: false, message: err.message });
+    res.json({ success: true, message: "Xoá thành công" });
   });
 };

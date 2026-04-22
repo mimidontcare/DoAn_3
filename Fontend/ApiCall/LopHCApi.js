@@ -10,3 +10,16 @@ export const addLopHC = (data) => {
     body: JSON.stringify(data),
   });
 };
+
+export const updateLopHC = (id, data) => {
+  return ApiFerch(`lophanhchinh/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+};
+
+export const deleteLopHC = (id) => {
+  return ApiFerch(`lophanhchinh/${id}`, {
+    method: "DELETE",
+  });
+};

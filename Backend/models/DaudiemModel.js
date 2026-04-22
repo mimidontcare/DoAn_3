@@ -17,7 +17,7 @@ const Daudiem = {
   },
 
   update: (id, data, callback) => {
-    db.query("UPDATE daudiem SET loaiDiem=?, MaDD=?, moTa=?, TenDD=? WHERE HeSoDiem=?", [data.loaiDiem, data.MaDD, data.moTa, data.TenDD, id],
+    db.query("UPDATE daudiem SET MaMonHoc=?, TenDauDiem=?, trongSo=? WHERE MaDauDiem=?", [data.MaMonHoc, data.TenDauDiem, data.trongSo, id],
       callback
     );
   },

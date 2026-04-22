@@ -15,9 +15,8 @@ import {
 import { useEffect, useState } from "react";
 import Item_hien from "@/app/items_phu/item_cua_khoa/page_hien";
 import ItemHien_Nganh from "@/app/items_phu/item_cua_nganh/page_hien";
-import { getAll } from "@/ApiCall/KhoaApi";
+import { getAll, deleteKhoa } from "@/ApiCall/KhoaApi";
 import { getAllNganh } from "@/ApiCall/NganhApi";
-import { get } from "http";
 type formKhoa = {
   maKhoa: string;
   tenKhoa: string;
@@ -41,40 +40,42 @@ export default function Page() {
   const [selectedKhoa, setSelectedKhoa] = useState<string | null>(null); // mã khoa đang xem
   const [selectedNganh, setSelectedNganh] = useState(false); // mã ngành đang xem
   const [sua, setSua] = useState(false);
-  useEffect(() => {
-    const fetchApi = async () => {
-      try {
-        const data = await getAll();
-        if (Array.isArray(data)) {
-          setKhoas(data);
-          if (data.length > 0) {
-            setSelectedKhoa(data[0].maKhoa);
-          }
-        } else {
-          console.error("Lỗi: API Khoa không trả về mảng", data);
-          setKhoas([]);
+  const fetchKhoas = async () => {
+    try {
+      const data = await getAll();
+      if (Array.isArray(data)) {
+        setKhoas(data);
+        if (data.length > 0 && !selectedKhoa) {
+          setSelectedKhoa(data[0].maKhoa);
         }
-      } catch (error) {
-        console.log(error);
+      } else {
+        console.error("Lỗi: API Khoa không trả về mảng", data);
+        setKhoas([]);
       }
-    };
-    fetchApi();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchKhoas();
   }, []);
-  useEffect(() => {
-    const fetchapi = async () => {
-      try {
-        const data = await getAllNganh();
-        if (Array.isArray(data)) {
-          setNganhs(data);
-        } else {
-          console.error("Lỗi: API Ngành không trả về mảng", data);
-          setNganhs([]);
-        }
-      } catch (error) {
-        console.log(error);
+  const fetchNganhs = async () => {
+    try {
+      const data = await getAllNganh();
+      if (Array.isArray(data)) {
+        setNganhs(data);
+      } else {
+        console.error("Lỗi: API Ngành không trả về mảng", data);
+        setNganhs([]);
       }
-    };
-    fetchapi();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchNganhs();
   }, []);
 
   // Dữ liệu khoa (lấy từ bảng Khoa)
@@ -97,6 +98,7 @@ export default function Page() {
           className="absolute inset-0 bg-black/50 z-50 flex items-center justify-center"
           onSuccess={() => {
             setDisplayForm(false);
+            fetchKhoas();
           }}
           onCancel={() => setDisplayForm(false)}
           setDisplayform={setDisplayForm}
@@ -108,6 +110,10 @@ export default function Page() {
         <ItemHien_Nganh
           maKhoa={selectedKhoa}
           className="absolute inset-0 bg-black/50 z-50 flex items-center justify-center"
+          onSuccess={() => {
+            setSelectedNganh(false);
+            fetchNganhs();
+          }}
           setDisplayform={setSelectedNganh}
           suaorThem={sua}
           nganh={nganh}
@@ -186,6 +192,17 @@ export default function Page() {
                   <button
                     className="p-2 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 transition-colors"
                     title="Xóa"
+                    onClick={async (e) => {
+                      e.stopPropagation();
+                      if (!confirm(`Bạn có chắc chắn muốn xóa khoa "${khoa.tenKhoa}"?`)) return;
+                      try {
+                        await deleteKhoa(khoa.maKhoa);
+                        if (selectedKhoa === khoa.maKhoa) setSelectedKhoa(null);
+                        fetchKhoas();
+                      } catch {
+                        alert("Lỗi khi xóa khôa");
+                      }
+                    }}
                   >
                     <Trash2 size={16} />
                   </button>

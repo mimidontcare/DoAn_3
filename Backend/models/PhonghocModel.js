@@ -10,8 +10,8 @@ const Phonghoc = {
   },
 
   create: (data, callback) => {
-    db.query("INSERT INTO phonghoc (sucChua, TenPhong, trangThai) VALUES (?, ?, ?)",
-      [data.sucChua, data.TenPhong, data.trangThai],
+    db.query("INSERT INTO phonghoc (maPhongHoc, TenPhong, sucChua, trangThai) VALUES (?, ?, ?, ?)",
+      [data.maPhongHoc, data.TenPhong, data.sucChua, data.trangThai],
       callback
     );
   },
@@ -27,7 +27,7 @@ const Phonghoc = {
   },
 
   search: (keyword, callback) => {
-    db.query("SELECT * FROM phonghoc WHERE sucChua LIKE ?", [`%${keyword}%`], callback);
+    db.query("SELECT * FROM phonghoc WHERE TenPhong LIKE ?", [`%${keyword}%`], callback);
   }
 };
 

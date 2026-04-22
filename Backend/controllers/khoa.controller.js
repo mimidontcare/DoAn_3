@@ -18,10 +18,10 @@ exports.create = (req, res) => {
   Khoa.create(req.body, (err, dl) => {
     if (err)
       return res.status(500).json({
-        seccess: false,
+        success: false,
         message: err.message,
       });
-    res.json({ seccess: true, message: "Thêm thành công", data: dl });
+    res.json({ success: true, message: "Thêm thành công", data: dl });
   });
 };
 

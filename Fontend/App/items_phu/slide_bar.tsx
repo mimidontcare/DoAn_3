@@ -9,6 +9,7 @@ import {
   BarChart3,
   Settings,
   LogOut,
+  DoorOpen,
 } from "lucide-react";
 
 export const SIDEBAR_MENU = [
@@ -22,6 +23,7 @@ export const SIDEBAR_MENU = [
       },
       { name: "Khoa & Ngành", path: "/admin/departments", icon: Building2 },
       { name: "Lớp học", path: "/admin/classes", icon: School },
+      { name: "Phòng học", path: "/admin/rooms", icon: DoorOpen },
       { name: "Sinh viên", path: "/admin/students", icon: Users },
       { name: "Giảng viên", path: "/admin/teachers", icon: UserCheck },
       { name: "Lịch học & Thi", path: "/admin/schedule", icon: Calendar },

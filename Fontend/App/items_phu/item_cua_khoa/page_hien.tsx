@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Building2, Phone, Mail, User, Save, X } from "lucide-react";
-import { addKhoa } from "@/ApiCall/KhoaApi";
+import { addKhoa, updateKhoa } from "@/ApiCall/KhoaApi";
 
 type KhoaFormData = {
   maKhoa: string;
@@ -39,14 +39,6 @@ export default function Item_hien({
 
   const [formData, setFormData] = useState<KhoaFormData>(emptyForm);
   const [errors, setErrors] = useState<Partial<KhoaFormData>>({});
-
-  /*
-  ====================================================
-  Khi mở form:
-  nếu sửa -> load dữ liệu khoa
-  nếu thêm -> reset form
-  ====================================================
-  */
 
   useEffect(() => {
     if (suaorThem && khoa) {
@@ -106,17 +98,19 @@ export default function Item_hien({
     if (!validate()) return;
 
     try {
-      console.log("DATA GỬI:", formData);
-      const res = await addKhoa(formData); // 🔥 phải await
-
-      console.log("API trả về:", res);
-
-      if (!res.success) {
-        alert(res.message);
-        return;
+      if (suaorThem && khoa) {
+        // Sửa khoa
+        const res = await updateKhoa(khoa.maKhoa, formData);
+        alert("Cập nhật thành công");
+      } else {
+        // Thêm khoa
+        const res = await addKhoa(formData);
+        if (!res.success) {
+          alert(res.message || "Thêm thất bại");
+          return;
+        }
+        alert("Thêm thành công");
       }
-
-      alert("Thêm thành công");
 
       setFormData(emptyForm);
       setErrors({});
@@ -126,6 +120,7 @@ export default function Item_hien({
       alert("Lỗi kết nối server");
     }
   };
+
   const handleCancel = () => {
     setFormData(emptyForm);
     setErrors({});
@@ -137,7 +132,6 @@ export default function Item_hien({
     <div className={`${className} z-[100] bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200`}>
       <div className="bg-white rounded-3xl w-full max-w-2xl shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
         {/* Header */}
-
         <div className="px-8 py-6 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between relative">
           <div className="flex items-center gap-3 text-slate-800">
             <Building2 className="text-blue-600" size={24} />
@@ -156,10 +150,8 @@ export default function Item_hien({
         </div>
 
         {/* Form */}
-
         <form onSubmit={handleSubmit} className="p-8 space-y-6 flex-1 overflow-y-auto">
           {/* Mã khoa */}
-
           <div className="space-y-2">
             <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
               Mã khoa <span className="text-red-500">*</span>
@@ -171,9 +163,11 @@ export default function Item_hien({
                 name="maKhoa"
                 value={formData.maKhoa}
                 onChange={handleChange}
+                disabled={suaorThem}
                 maxLength={10}
                 placeholder="VD: CNTT"
                 className={`w-full pl-11 pr-4 py-3 bg-slate-50 border rounded-xl text-sm focus:outline-none focus:ring-2 transition-all ${
+                  suaorThem ? "opacity-60 cursor-not-allowed" :
                   errors.maKhoa
                     ? "border-red-400 focus:ring-red-200"
                     : "border-slate-200 focus:ring-blue-500/20 focus:border-blue-500"
@@ -192,7 +186,6 @@ export default function Item_hien({
           </div>
 
           {/* Tên khoa */}
-
           <div className="space-y-2">
             <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
               Tên khoa <span className="text-red-500">*</span>
@@ -218,7 +211,6 @@ export default function Item_hien({
           </div>
 
           {/* SĐT */}
-
           <div className="space-y-2">
             <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
               Số điện thoại
@@ -250,7 +242,6 @@ export default function Item_hien({
           </div>
 
           {/* Email */}
-
           <div className="space-y-2">
             <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
               Email
@@ -282,7 +273,6 @@ export default function Item_hien({
           </div>
 
           {/* Trưởng khoa */}
-
           <div className="space-y-2">
             <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
               Trưởng khoa
@@ -306,7 +296,6 @@ export default function Item_hien({
           </div>
 
           {/* Buttons */}
-
           <div className="mt-10 pt-6 border-t border-slate-100 flex justify-end gap-3">
             <button
               type="button"
@@ -320,6 +309,7 @@ export default function Item_hien({
               type="submit"
               className="px-6 py-3 font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-lg hover:shadow-blue-500/30 transition-all active:scale-95 flex items-center gap-2"
             >
+              <Save size={16} />
               {suaorThem ? "Cập nhật" : "Thêm khoa"}
             </button>
           </div>

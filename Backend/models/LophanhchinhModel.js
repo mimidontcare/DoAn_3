@@ -6,24 +6,24 @@ const Lophanhchinh = {
   },
 
   getById: (id, callback) => {
-    db.query("SELECT * FROM lophanhchinh WHERE khoaHoc=?", [id], callback);
+    db.query("SELECT * FROM lophanhchinh WHERE MaLopHC=?", [id], callback);
   },
 
   create: (data, callback) => {
-    db.query("INSERT INTO lophanhchinh (MaLopHC, NganhHoc, SISO, TenLop) VALUES (?, ?, ?, ?)",
-      [data.MaLopHC, data.NganhHoc, data.SISO, data.TenLop],
+    db.query("INSERT INTO lophanhchinh (MaLopHC, NganhHoc, SISO, TenLop, KhoaHoc, CoVan) VALUES (?, ?, ?, ?, ?, ?)",
+      [data.MaLopHC, data.NganhHoc, data.SISO, data.TenLop, data.KhoaHoc, data.CoVan],
       callback
     );
   },
 
   update: (id, data, callback) => {
-    db.query("UPDATE lophanhchinh SET MaLopHC=?, NganhHoc=?, SISO=?, TenLop=? WHERE khoaHoc=?", [data.MaLopHC, data.NganhHoc, data.SISO, data.TenLop, id],
+    db.query("UPDATE lophanhchinh SET NganhHoc=?, SISO=?, TenLop=?, KhoaHoc=?, CoVan=? WHERE MaLopHC=?", [data.NganhHoc, data.SISO, data.TenLop, data.KhoaHoc, data.CoVan, id],
       callback
     );
   },
 
   delete: (id, callback) => {
-    db.query("DELETE FROM lophanhchinh WHERE khoaHoc=?", [id], callback);
+    db.query("DELETE FROM lophanhchinh WHERE MaLopHC=?", [id], callback);
   },
 
   search: (keyword, callback) => {

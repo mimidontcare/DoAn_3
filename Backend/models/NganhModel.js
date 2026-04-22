@@ -10,14 +10,14 @@ const Nganh = {
   },
 
   create: (data, callback) => {
-    db.query("INSERT INTO nganh (maNganh, soTinChi, tenNganh, trinhDoDaoTao) VALUES (?, ?, ?, ?)",
-      [data.maNganh, data.soTinChi, data.tenNganh, data.trinhDoDaoTao],
+    db.query("INSERT INTO nganh (maNganh, maKhoa, soTinChi, tenNganh, trinhDoDaoTao) VALUES (?, ?, ?, ?, ?)",
+      [data.maNganh, data.maKhoa, data.soTinChi, data.tenNganh, data.trinhDoDaoTao],
       callback
     );
   },
 
   update: (id, data, callback) => {
-    db.query("UPDATE nganh SET maNganh=?, soTinChi=?, tenNganh=?, trinhDoDaoTao=? WHERE maKhoa=?", [data.maNganh, data.soTinChi, data.tenNganh, data.trinhDoDaoTao, id],
+    db.query("UPDATE nganh SET maKhoa=?, soTinChi=?, tenNganh=?, trinhDoDaoTao=? WHERE maNganh=?", [data.maKhoa, data.soTinChi, data.tenNganh, data.trinhDoDaoTao, id],
       callback
     );
   },

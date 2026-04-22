@@ -16,12 +16,30 @@ import {
 import { useState, useRef, useEffect } from "react";
 import AddLopHCModal from "@/app/items_phu/item_cua_lop/AddLopHCModal";
 import AddLopHPModal from "@/app/items_phu/item_cua_lop/AddLopHPModal";
+import { getAllLopHC, deleteLopHC } from "@/ApiCall/LopHCApi";
 
 export default function Page() {
   const [activeTab, setActiveTab] = useState<"lopHC" | "lopHP">("lopHC");
 
   const [showHCModal, setShowHCModal] = useState(false);
   const [showHPModal, setShowHPModal] = useState(false);
+  const [editHCData, setEditHCData] = useState<any | null>(null);
+
+  // Dữ liệu lớp hành chính từ API
+  const [lopHCs, setLopHCs] = useState<any[]>([]);
+
+  const fetchLopHCs = async () => {
+    try {
+      const data = await getAllLopHC();
+      if (Array.isArray(data)) setLopHCs(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchLopHCs();
+  }, []);
 
   // Filters cho lớp học phần
   const [selectHK, setSelectHK] = useState("Học kỳ 1");
@@ -107,8 +125,9 @@ export default function Page() {
       {showHCModal && (
         <AddLopHCModal
           className="fixed inset-0 z-[200] flex items-center justify-center"
-          onSuccess={() => setShowHCModal(false)}
-          onCancel={() => setShowHCModal(false)}
+          editData={editHCData}
+          onSuccess={() => { setShowHCModal(false); setEditHCData(null); fetchLopHCs(); }}
+          onCancel={() => { setShowHCModal(false); setEditHCData(null); }}
         />
       )}
 
@@ -141,8 +160,12 @@ export default function Page() {
 
           <button
             onClick={() => {
-              if (activeTab === "lopHC") setShowHCModal(true);
-              else setShowHPModal(true);
+              if (activeTab === "lopHC") {
+                setEditHCData(null);
+                setShowHCModal(true);
+              } else {
+                setShowHPModal(true);
+              }
             }}
             className="group flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-semibold shadow-lg hover:shadow-indigo-500/30 transition-all duration-300 active:scale-[0.97]"
           >
@@ -197,74 +220,63 @@ export default function Page() {
                   <table className="min-w-full divide-y divide-slate-100">
                     <thead className="bg-slate-50/80 backdrop-blur-md">
                       <tr>
-                        <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                          Mã lớp
-                        </th>
-                        <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                          Tên lớp
-                        </th>
-                        <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                          Khóa
-                        </th>
-                        <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                          Khoa
-                        </th>
-                        <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                          Cố vấn
-                        </th>
-                        <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                          Sĩ số
-                        </th>
-                        <th className="px-6 py-4 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                          Thao tác
-                        </th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Mã lớp</th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Tên lớp</th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Khóa</th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Khoa</th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Cố vấn</th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Sĩ số</th>
+                        <th className="px-6 py-4 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">Thao tác</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100/80 bg-white">
-                      {/* Dữ liệu mẫu — thay bằng data thật */}
-                      <tr className="hover:bg-blue-50/40 transition-colors duration-200 group">
-                        <td className="whitespace-nowrap px-6 py-4 text-sm font-semibold text-slate-800">
-                          LH-001
-                        </td>
-                        <td className="px-6 py-4 text-sm text-slate-700">
-                          K65-CNTT-01
-                        </td>
-                        <td className="px-6 py-4 text-sm text-slate-600">K65</td>
-                        <td className="px-6 py-4 text-sm text-slate-600">
-                          Công nghệ thông tin
-                        </td>
-                        <td className="px-6 py-4 text-sm text-slate-600">
-                          TS. Nguyễn Văn An
-                        </td>
-                        <td className="px-6 py-4 text-sm text-slate-600">45</td>
-                        <td className="px-6 py-4 text-right">
-                          <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                            <button
-                              onClick={() => setShowHCModal(true)}
-                              className="p-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-600 hover:text-amber-700 transition-all shadow-sm"
-                              title="Chỉnh sửa"
-                            >
-                              <Pencil size={16} />
-                            </button>
-                            <button
-                              onClick={() => alert("Chi tiết: LH-001")}
-                              className="p-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-600 hover:text-blue-700 transition-all shadow-sm"
-                              title="Xem chi tiết"
-                            >
-                              <Eye size={16} />
-                            </button>
-                            <button
-                              onClick={() => {
-                                if (confirm("Bạn có chắc muốn xóa lớp này?")) alert("Xóa: LH-001");
-                              }}
-                              className="p-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 hover:text-rose-700 transition-all shadow-sm"
-                              title="Xóa lớp"
-                            >
-                              <Trash2 size={16} />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
+                      {lopHCs.length === 0 ? (
+                        <tr>
+                          <td colSpan={7} className="px-6 py-12 text-center text-slate-400">Chưa có dữ liệu lớp hành chính</td>
+                        </tr>
+                      ) : (
+                        lopHCs.map((lop) => (
+                          <tr key={lop.MaLopHC} className="hover:bg-blue-50/40 transition-colors duration-200 group">
+                            <td className="whitespace-nowrap px-6 py-4 text-sm font-semibold text-slate-800">{lop.MaLopHC}</td>
+                            <td className="px-6 py-4 text-sm text-slate-700">{lop.TenLop}</td>
+                            <td className="px-6 py-4 text-sm text-slate-600">{lop.KhoaHoc || "-"}</td>
+                            <td className="px-6 py-4 text-sm text-slate-600">{lop.NganhHoc || "-"}</td>
+                            <td className="px-6 py-4 text-sm text-slate-600">{lop.CoVan || "-"}</td>
+                            <td className="px-6 py-4 text-sm text-slate-600">{lop.SISO ?? "-"}</td>
+                            <td className="px-6 py-4 text-right">
+                              <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                <button
+                                  onClick={() => { setEditHCData(lop); setShowHCModal(true); }}
+                                  className="p-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-600 hover:text-amber-700 transition-all shadow-sm"
+                                  title="Chỉnh sửa"
+                                >
+                                  <Pencil size={16} />
+                                </button>
+                                <button
+                                  onClick={() => alert(`Chi tiết: ${lop.MaLopHC}`)}
+                                  className="p-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-600 hover:text-blue-700 transition-all shadow-sm"
+                                  title="Xem chi tiết"
+                                >
+                                  <Eye size={16} />
+                                </button>
+                                <button
+                                  onClick={async () => {
+                                    if (!confirm(`Xóa lớp "${lop.TenLop}"?`)) return;
+                                    try {
+                                      await deleteLopHC(lop.MaLopHC);
+                                      fetchLopHCs();
+                                    } catch { alert("Lỗi khi xóa"); }
+                                  }}
+                                  className="p-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 hover:text-rose-700 transition-all shadow-sm"
+                                  title="Xóa lớp"
+                                >
+                                  <Trash2 size={16} />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      )}
                     </tbody>
                   </table>
                 </div>
