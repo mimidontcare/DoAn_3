@@ -17,7 +17,9 @@ const Monhoc = {
   },
 
   update: (id, data, callback) => {
-    db.query("UPDATE monhoc SET maMonHoc=?, TenMonHoc=?, soTinChi=?, loaiMonHoc=? WHERE MaMonHoc=?", [data.maMonHoc, data.TenMonHoc, data.soTinChi, data.loaiMonHoc, id],
+    db.query(
+      "UPDATE monhoc SET maNganh=?, soTiet=?, soTinChi=?, tenMonHoc=?, thuTuUtien=? WHERE maMonHoc=?",
+      [data.maNganh, data.soTiet, data.soTinChi, data.tenMonHoc, data.thuTuUtien, id],
       callback
     );
   },

@@ -6,7 +6,7 @@ const Daudiem = {
   },
 
   getById: (id, callback) => {
-    db.query("SELECT * FROM daudiem WHERE HeSoDiem=?", [id], callback);
+    db.query("SELECT * FROM daudiem WHERE MaDD=?", [id], callback);
   },
 
   create: (data, callback) => {
@@ -17,13 +17,15 @@ const Daudiem = {
   },
 
   update: (id, data, callback) => {
-    db.query("UPDATE daudiem SET MaMonHoc=?, TenDauDiem=?, trongSo=? WHERE MaDauDiem=?", [data.MaMonHoc, data.TenDauDiem, data.trongSo, id],
+    db.query(
+      "UPDATE daudiem SET loaiDiem=?, moTa=?, TenDD=? WHERE MaDD=?",
+      [data.loaiDiem, data.moTa, data.TenDD, id],
       callback
     );
   },
 
   delete: (id, callback) => {
-    db.query("DELETE FROM daudiem WHERE HeSoDiem=?", [id], callback);
+    db.query("DELETE FROM daudiem WHERE MaDD=?", [id], callback);
   },
 
   search: (keyword, callback) => {

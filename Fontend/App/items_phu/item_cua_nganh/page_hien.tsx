@@ -231,7 +231,7 @@ const ItemHien_Nganh = ({
             className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow"
           >
             <Save size={16} />
-            {suaorThem ? "Cập nhật" : "Thêm khoa"}
+            {suaorThem ? "Cập nhật" : "Thêm ngành"}
           </button>
         </div>
       </div>

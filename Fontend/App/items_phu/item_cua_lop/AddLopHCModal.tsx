@@ -43,7 +43,11 @@ export default function AddLopHCModal({
   useEffect(() => {
     if (editData) {
       setFormData({
-        ...editData,
+        MaLopHC: editData.MaLopHC || "",
+        TenLop: editData.TenLop || "",
+        KhoaHoc: editData.KhoaHoc || "",
+        NganhHoc: editData.NganhHoc || "",
+        CoVan: editData.CoVan || "",
         SISO: editData.SISO?.toString() ?? "",
       });
     } else {

@@ -6,7 +6,7 @@ const Nganh = {
   },
 
   getById: (id, callback) => {
-    db.query("SELECT * FROM nganh WHERE maKhoa=?", [id], callback);
+    db.query("SELECT * FROM nganh WHERE maNganh=?", [id], callback);
   },
 
   create: (data, callback) => {
@@ -23,7 +23,7 @@ const Nganh = {
   },
 
   delete: (id, callback) => {
-    db.query("DELETE FROM nganh WHERE maKhoa=?", [id], callback);
+    db.query("DELETE FROM nganh WHERE maNganh=?", [id], callback);
   },
 
   search: (keyword, callback) => {

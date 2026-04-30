@@ -9,7 +9,7 @@ exports.getAll = (req, res) => {
 
 exports.getById = (req, res) => {
   Lophanhchinh.getById(req.params.id, (err, result) => {
-    if (err) return res.status(500).json(err);
+    if (err) return res.status(500).json({ success: false, message: err.message });
     res.json(result);
   });
 };

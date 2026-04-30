@@ -2,19 +2,24 @@
 
 import React, { useState } from "react";
 import { BookOpen, Save, X } from "lucide-react";
-import { addLopHP } from "@/ApiCall/LopHPApi";
+import { addLopHP, updateLopHP } from "@/ApiCall/LopHPApi";
+import { useEffect } from "react";
 
 type Props = {
   className?: string;
   onSuccess?: () => void;
   onCancel?: () => void;
+  editData?: any | null;
 };
 
 export default function AddLopHPModal({
   className,
   onSuccess,
   onCancel,
+  editData,
 }: Props) {
+  const isEdit = !!editData;
+
   const [formData, setFormData] = useState({
     MaLopHocPhan: "",
     maLopHP: "",
@@ -26,6 +31,22 @@ export default function AddLopHPModal({
     thuTuUuTien: "",
     maGiangVien: "",
   });
+
+  useEffect(() => {
+    if (editData) {
+      setFormData({
+        MaLopHocPhan: editData.MaLopHocPhan || "",
+        maLopHP: editData.maLopHP || "",
+        MaMonHoc: editData.MaMonHoc || "",
+        soLuongSinhVien: editData.soLuongSinhVien?.toString() || "",
+        tenLop: editData.tenLop || "",
+        thoigianDong: editData.thoigianDong ? editData.thoigianDong.split("T")[0] : "",
+        ThoigianMo: editData.ThoigianMo ? editData.ThoigianMo.split("T")[0] : "",
+        thuTuUuTien: editData.thuTuUuTien?.toString() || "",
+        maGiangVien: editData.maGiangVien || "",
+      });
+    }
+  }, [editData]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -47,14 +68,16 @@ export default function AddLopHPModal({
         thuTuUuTien: Number(formData.thuTuUuTien) || 0,
       };
       
-      const res = await addLopHP(payload);
+      const res = isEdit 
+        ? await updateLopHP(editData.MaLopHocPhan, payload)
+        : await addLopHP(payload);
 
       if (res.error || res.sqlMessage) {
         alert("Lỗi: " + (res.sqlMessage || res.error));
         return;
       }
 
-      alert("Thêm lớp học phần thành công!");
+      alert(isEdit ? "Cập nhật lớp học phần thành công!" : "Thêm lớp học phần thành công!");
       onSuccess?.();
     } catch (err) {
       console.error(err);
@@ -68,7 +91,7 @@ export default function AddLopHPModal({
         <div className="px-8 py-6 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
           <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-3">
             <BookOpen className="text-blue-600" size={24} />
-            Thêm lớp học phần
+            {isEdit ? "Chỉnh sửa lớp học phần" : "Thêm lớp học phần"}
           </h2>
           <button
             type="button"
@@ -90,8 +113,9 @@ export default function AddLopHPModal({
                 name="MaLopHocPhan"
                 value={formData.MaLopHocPhan}
                 onChange={handleChange}
+                disabled={isEdit}
                 placeholder="VD: HP001"
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                className={`w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all ${isEdit ? "opacity-60 cursor-not-allowed" : ""}`}
               />
             </div>
 
@@ -218,7 +242,7 @@ export default function AddLopHPModal({
               type="submit"
               className="px-6 py-3 font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-lg hover:shadow-blue-500/30 transition-all active:scale-95 flex items-center gap-2"
             >
-              Lưu Thành Mới
+              {isEdit ? "Cập nhật" : "Lưu Thành Mới"}
             </button>
           </div>
         </form>

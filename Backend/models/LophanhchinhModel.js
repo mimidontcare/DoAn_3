@@ -17,7 +17,9 @@ const Lophanhchinh = {
   },
 
   update: (id, data, callback) => {
-    db.query("UPDATE lophanhchinh SET NganhHoc=?, SISO=?, TenLop=?, KhoaHoc=?, CoVan=? WHERE MaLopHC=?", [data.NganhHoc, data.SISO, data.TenLop, data.KhoaHoc, data.CoVan, id],
+    db.query(
+      "UPDATE lophanhchinh SET NganhHoc=?, SISO=?, TenLop=?, KhoaHoc=?, CoVan=? WHERE MaLopHC=?",
+      [data.NganhHoc, data.SISO, data.TenLop, data.KhoaHoc, data.CoVan, id],
       callback
     );
   },

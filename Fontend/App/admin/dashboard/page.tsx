@@ -14,7 +14,7 @@ export default function Page() {
     <div className="relative p-6 w-full h-full bg-gradient-to-br from-indigo-50 via-white to-blue-50 border border-indigo-100 rounded-2xl flex flex-col overflow-hidden shadow-sm">
       {/* HEADER */}
       <div className="mb-6 flex-shrink-0">
-        <h1 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-indigo-600 tracking-tight">
+        <h1 className="text-3xl font-bold text-black tracking-tight">
           Tổng quan hệ thống
         </h1>
         <p className="text-slate-500 mt-2 font-medium">

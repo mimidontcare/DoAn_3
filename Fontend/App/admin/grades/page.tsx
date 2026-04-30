@@ -114,7 +114,7 @@ export default function GradesPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-indigo-600 tracking-tight flex items-center gap-3">
+          <h1 className="text-3xl font-bold text-black tracking-tight flex items-center gap-3">
             <BarChart3 size={36} className="text-blue-600" />
             Quản Lý Bảng Điểm
           </h1>

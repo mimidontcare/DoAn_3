@@ -17,6 +17,7 @@ import { useState, useRef, useEffect } from "react";
 import AddLopHCModal from "@/app/items_phu/item_cua_lop/AddLopHCModal";
 import AddLopHPModal from "@/app/items_phu/item_cua_lop/AddLopHPModal";
 import { getAllLopHC, deleteLopHC } from "@/ApiCall/LopHCApi";
+import { getAllLopHP, deleteLopHP } from "@/ApiCall/LopHPApi";
 
 export default function Page() {
   const [activeTab, setActiveTab] = useState<"lopHC" | "lopHP">("lopHC");
@@ -24,9 +25,11 @@ export default function Page() {
   const [showHCModal, setShowHCModal] = useState(false);
   const [showHPModal, setShowHPModal] = useState(false);
   const [editHCData, setEditHCData] = useState<any | null>(null);
+  const [editHPData, setEditHPData] = useState<any | null>(null);
 
   // Dữ liệu lớp hành chính từ API
   const [lopHCs, setLopHCs] = useState<any[]>([]);
+  const [lopHPs, setLopHPs] = useState<any[]>([]);
 
   const fetchLopHCs = async () => {
     try {
@@ -37,8 +40,18 @@ export default function Page() {
     }
   };
 
+  const fetchLopHPs = async () => {
+    try {
+      const data = await getAllLopHP();
+      if (Array.isArray(data)) setLopHPs(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     fetchLopHCs();
+    fetchLopHPs();
   }, []);
 
   // Filters cho lớp học phần
@@ -134,8 +147,9 @@ export default function Page() {
       {showHPModal && (
         <AddLopHPModal
           className="fixed inset-0 z-[200] flex items-center justify-center"
-          onSuccess={() => setShowHPModal(false)}
-          onCancel={() => setShowHPModal(false)}
+          editData={editHPData}
+          onSuccess={() => { setShowHPModal(false); setEditHPData(null); fetchLopHPs(); }}
+          onCancel={() => { setShowHPModal(false); setEditHPData(null); }}
         />
       )}
 
@@ -143,7 +157,7 @@ export default function Page() {
         {/* Header */}
         <div className="flex items-center justify-between mb-8 flex-col sm:flex-row gap-4">
           <div>
-            <h1 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-indigo-600 tracking-tight flex items-center gap-3">
+            <h1 className="text-3xl font-bold text-black tracking-tight flex items-center gap-3">
               {activeTab === "lopHC" ? (
                 <School size={36} className="text-blue-600" />
               ) : (
@@ -164,6 +178,7 @@ export default function Page() {
                 setEditHCData(null);
                 setShowHCModal(true);
               } else {
+                setEditHPData(null);
                 setShowHPModal(true);
               }
             }}
@@ -425,78 +440,88 @@ export default function Page() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100/80 bg-white">
-                      {courses.map((course) => (
-                        <tr
-                          key={course.id}
-                          className="hover:bg-blue-50/40 transition-colors duration-200 group"
-                        >
-                          <td className="whitespace-nowrap px-6 py-4 text-sm font-semibold text-blue-600">
-                            {course.id}
-                          </td>
-                          <td className="px-6 py-4 text-sm font-medium text-slate-800">
-                            {course.name}
-                          </td>
-                          <td className="whitespace-nowrap px-6 py-4 text-sm text-slate-600">
-                            {course.group}
-                          </td>
-                          <td className="px-6 py-4">
-                            <div className="flex items-center gap-3">
-                              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-700">
-                                {course.teacherCode}
-                              </div>
-                              <span className="text-sm text-slate-800">
-                                {course.teacher}
-                              </span>
-                            </div>
-                          </td>
-                          <td className="whitespace-nowrap px-6 py-4">
-                            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700 shadow-sm border border-slate-200">
-                              {course.day} • {course.time}
-                            </span>
-                          </td>
-                          <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-slate-700">
-                            {course.room}
-                          </td>
-                          <td className="whitespace-nowrap px-6 py-4">
-                            <span
-                              className={`inline-flex rounded-full px-3 py-1.5 text-xs font-semibold border ${
-                                course.status === "ĐANG HỌC"
-                                  ? "bg-emerald-100/80 text-emerald-700 border-emerald-200"
-                                  : "bg-slate-100/80 text-slate-700 border-slate-200"
-                              }`}
-                            >
-                              {course.status}
-                            </span>
-                          </td>
-                          <td className="px-6 py-4">
-                            <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                              <button
-                                onClick={() => setShowHPModal(true)}
-                                className="p-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-600 hover:text-amber-700 transition-all shadow-sm"
-                                title="Chỉnh sửa"
-                              >
-                                <Pencil size={16} />
-                              </button>
-                              <button
-                                onClick={() => alert(`Chi tiết: ${course.id}`)}
-                                className="p-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-600 hover:text-blue-700 transition-all shadow-sm"
-                                title="Xem chi tiết"
-                              >
-                                <Eye size={16} />
-                              </button>
-                              <button
-                                onClick={() => {
-                                  if (confirm(`Xóa lớp ${course.id}?`)) alert(`Đã xóa: ${course.id}`);
-                                }}
-                                className="p-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 hover:text-rose-700 transition-all shadow-sm"
-                                title="Xóa"
-                              >
-                                <Trash2 size={16} />
-                              </button>
-                            </div>
-                          </td>
+                      {lopHPs.length === 0 ? (
+                        <tr>
+                          <td colSpan={8} className="px-6 py-12 text-center text-slate-400">Chưa có dữ liệu lớp học phần</td>
                         </tr>
-                      ))}
+                      ) : (
+                        lopHPs.map((course) => (
+                          <tr
+                            key={course.MaLopHocPhan}
+                            className="hover:bg-blue-50/40 transition-colors duration-200 group"
+                          >
+                            <td className="whitespace-nowrap px-6 py-4 text-sm font-semibold text-blue-600">
+                              {course.MaLopHocPhan}
+                            </td>
+                            <td className="px-6 py-4 text-sm font-medium text-slate-800">
+                              {course.tenLop}
+                            </td>
+                            <td className="whitespace-nowrap px-6 py-4 text-sm text-slate-600">
+                              {course.maLopHP || "-"}
+                            </td>
+                            <td className="px-6 py-4">
+                              <div className="flex items-center gap-3">
+                                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-700">
+                                  {course.maGiangVien?.substring(0, 2).toUpperCase() || "GV"}
+                                </div>
+                                <span className="text-sm text-slate-800">
+                                  {course.maGiangVien || "-"}
+                                </span>
+                              </div>
+                            </td>
+                            <td className="whitespace-nowrap px-6 py-4">
+                              <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700 shadow-sm border border-slate-200">
+                                {course.ThoigianMo ? new Date(course.ThoigianMo).toLocaleDateString("vi-VN") : "N/A"}
+                              </span>
+                            </td>
+                            <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-slate-700">
+                              {course.MaMonHoc || "-"}
+                            </td>
+                            <td className="whitespace-nowrap px-6 py-4">
+                              <span
+                                className={`inline-flex rounded-full px-3 py-1.5 text-xs font-semibold border ${
+                                  course.soLuongSinhVien > 0
+                                    ? "bg-emerald-100/80 text-emerald-700 border-emerald-200"
+                                    : "bg-slate-100/80 text-slate-700 border-slate-200"
+                                }`}
+                              >
+                                {course.soLuongSinhVien > 0 ? "ĐANG MỞ" : "HẾT CHỖ"}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4">
+                              <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                <button
+                                  onClick={() => { setEditHPData(course); setShowHPModal(true); }}
+                                  className="p-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-600 hover:text-amber-700 transition-all shadow-sm"
+                                  title="Chỉnh sửa"
+                                >
+                                  <Pencil size={16} />
+                                </button>
+                                <button
+                                  onClick={() => alert(`Chi tiết: ${course.MaLopHocPhan}`)}
+                                  className="p-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-600 hover:text-blue-700 transition-all shadow-sm"
+                                  title="Xem chi tiết"
+                                >
+                                  <Eye size={16} />
+                                </button>
+                                <button
+                                  onClick={async () => {
+                                    if (!confirm(`Xóa lớp HP "${course.tenLop}"?`)) return;
+                                    try {
+                                      await deleteLopHP(course.MaLopHocPhan);
+                                      fetchLopHPs();
+                                    } catch { alert("Lỗi khi xóa"); }
+                                  }}
+                                  className="p-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 hover:text-rose-700 transition-all shadow-sm"
+                                  title="Xóa"
+                                >
+                                  <Trash2 size={16} />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      )}
                     </tbody>
                   </table>
                 </div>

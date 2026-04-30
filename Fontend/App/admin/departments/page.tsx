@@ -38,8 +38,10 @@ export default function Page() {
 
   const [displayForm, setDisplayForm] = useState(false);
   const [selectedKhoa, setSelectedKhoa] = useState<string | null>(null); // mã khoa đang xem
-  const [selectedNganh, setSelectedNganh] = useState(false); // mã ngành đang xem
+  const [selectedNganh, setSelectedNganh] = useState(false); // hiển thị modal ngành
   const [sua, setSua] = useState(false);
+  const [editingKhoa, setEditingKhoa] = useState<formKhoa | null>(null);
+  const [editingNganh, setEditingNganh] = useState<formNganh | null>(null);
   const fetchKhoas = async () => {
     try {
       const data = await getAll();
@@ -80,17 +82,12 @@ export default function Page() {
 
   // Dữ liệu khoa (lấy từ bảng Khoa)
 
-  const khoa = khoas.find((k) => k.maKhoa === selectedKhoa);
+  const selectedKhoaInfo = khoas.find((k) => k.maKhoa === selectedKhoa);
 
   // Lọc ngành theo khoa đang chọn (nếu không chọn thì hiện tất cả)
   const displayedNganhs = selectedKhoa
     ? nganhs.filter((n) => n.maKhoa === selectedKhoa)
     : nganhs;
-
-  const selectedKhoaInfo = khoas.find((k) => k.maKhoa === selectedKhoa);
-  const nganh = nganhs.find((n) => {
-    return n.maKhoa === selectedKhoa;
-  });
   return (
     <div className="relative p-6 w-full h-full bg-gradient-to-br from-indigo-50 via-white to-blue-50 border border-indigo-100 rounded-2xl flex gap-6 overflow-hidden shadow-sm">
       {displayForm && (
@@ -102,7 +99,7 @@ export default function Page() {
           }}
           onCancel={() => setDisplayForm(false)}
           setDisplayform={setDisplayForm}
-          khoa={khoa}
+          khoa={editingKhoa || undefined}
           suaorThem={sua}
         />
       )}
@@ -116,7 +113,7 @@ export default function Page() {
           }}
           setDisplayform={setSelectedNganh}
           suaorThem={sua}
-          nganh={nganh}
+          nganh={editingNganh || undefined}
         />
       )}
 
@@ -125,7 +122,7 @@ export default function Page() {
         {/* HEADER */}
         <div className="p-5 border-b border-slate-100 bg-white/80 backdrop-blur-sm sticky top-0 z-10 h-[20%]">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-indigo-600 tracking-tight">
+            <h2 className="text-2xl font-bold text-black tracking-tight">
               Quản lý khoa
             </h2>
             <span className="text-sm text-slate-500 font-medium bg-slate-100 px-3 py-1 rounded-full">
@@ -182,7 +179,9 @@ export default function Page() {
                   <button
                     className="p-2 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-700 transition-colors"
                     title="Chỉnh sửa"
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setEditingKhoa(khoa);
                       setDisplayForm(true);
                       setSua(true);
                     }}
@@ -217,6 +216,7 @@ export default function Page() {
           <button
             className="w-full flex items-center justify-center gap-2 px-6 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-3 rounded-xl font-semibold shadow-lg hover:shadow-indigo-500/30 transition-all duration-300 active:scale-[0.98]"
             onClick={() => {
+              setEditingKhoa(null);
               setDisplayForm(true);
               setSua(false);
             }}
@@ -233,7 +233,7 @@ export default function Page() {
         <div className="p-5 border-b border-slate-100 bg-white/80 backdrop-blur-sm sticky top-0 z-10 space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-indigo-600 tracking-tight">
+              <h2 className="text-2xl font-bold text-black tracking-tight">
                 {selectedKhoa && selectedKhoaInfo
                   ? `Ngành thuộc ${selectedKhoaInfo.tenKhoa}`
                   : "Quản lý ngành"}
@@ -261,6 +261,7 @@ export default function Page() {
                   alert("Vui lòng chọn khoa trước khi thêm ngành");
                   return;
                 }
+                setEditingNganh(null);
                 setSelectedNganh(true);
                 setSua(false);
               }}
@@ -314,7 +315,9 @@ export default function Page() {
                       className="p-2.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-700 transition-colors"
                       title="Chỉnh sửa"
                       onClick={() => {
-                        (setSua(true), setSelectedNganh(true));
+                        setEditingNganh(major);
+                        setSua(true);
+                        setSelectedNganh(true);
                       }}
                     >
                       <Pencil size={16} />

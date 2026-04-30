@@ -17,7 +17,17 @@ const Giangvien = {
   },
 
   update: (id, data, callback) => {
-    db.query("UPDATE giangvien SET maGV=?, TenGiangVien=?, email=?, sdt=?, chuyenMon=?, hocVi=? WHERE maGiangVien=?", [data.maGV, data.TenGiangVien, data.email, data.sdt, data.chuyenMon, data.hocVi, id],
+    db.query(
+      "UPDATE giangvien SET Khoa=?, MaNguoiDung=?, Mon=?, NgaySinh=?, TenGiangVien=?, TrinhDo=? WHERE maGiangVien=?",
+      [
+        data.Khoa,
+        data.MaNguoiDung,
+        data.Mon,
+        data.NgaySinh,
+        data.TenGiangVien,
+        data.TrinhDo,
+        id,
+      ],
       callback
     );
   },
