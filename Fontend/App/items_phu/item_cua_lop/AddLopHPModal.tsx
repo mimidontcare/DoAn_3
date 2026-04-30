@@ -10,6 +10,7 @@ type Props = {
   onSuccess?: () => void;
   onCancel?: () => void;
   editData?: any | null;
+  newId?: string;
 };
 
 export default function AddLopHPModal({
@@ -17,11 +18,12 @@ export default function AddLopHPModal({
   onSuccess,
   onCancel,
   editData,
+  newId,
 }: Props) {
   const isEdit = !!editData;
 
   const [formData, setFormData] = useState({
-    MaLopHocPhan: "",
+    MaLopHocPhan: newId || "",
     maLopHP: "",
     MaMonHoc: "",
     soLuongSinhVien: "",
@@ -45,8 +47,20 @@ export default function AddLopHPModal({
         thuTuUuTien: editData.thuTuUuTien?.toString() || "",
         maGiangVien: editData.maGiangVien || "",
       });
+    } else {
+      setFormData({
+        MaLopHocPhan: newId || "",
+        maLopHP: "",
+        MaMonHoc: "",
+        soLuongSinhVien: "",
+        tenLop: "",
+        thoigianDong: "",
+        ThoigianMo: "",
+        thuTuUuTien: "",
+        maGiangVien: "",
+      });
     }
-  }, [editData]);
+  }, [editData, newId]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -112,10 +126,10 @@ export default function AddLopHPModal({
                 type="text"
                 name="MaLopHocPhan"
                 value={formData.MaLopHocPhan}
-                onChange={handleChange}
-                disabled={isEdit}
-                placeholder="VD: HP001"
-                className={`w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all ${isEdit ? "opacity-60 cursor-not-allowed" : ""}`}
+                disabled
+                readOnly
+                placeholder="Đang sinh mã tự động..."
+                className="w-full px-4 py-3 border border-slate-300 bg-slate-200 rounded-xl outline-none font-bold text-slate-500 cursor-not-allowed opacity-80"
               />
             </div>
 

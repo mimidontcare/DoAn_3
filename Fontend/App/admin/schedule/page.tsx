@@ -106,8 +106,33 @@ export default function SchedulePage() {
   };
 
   // Lịch Thi Actions
+  const generateNewExamId = () => {
+    if (lichThis.length === 0) return "LT01";
+    let maxNum = 0;
+    let currentPrefix = "LT";
+    let currentPadding = 2;
+
+    lichThis.forEach(lt => {
+      if (!lt.maLichThi) return;
+      const match = lt.maLichThi.match(/^([a-zA-Z]*)(\d+)$/);
+      if (match) {
+        const numStr = match[2];
+        const num = parseInt(numStr, 10);
+        if (num > maxNum) {
+          maxNum = num;
+          currentPrefix = match[1];
+          currentPadding = numStr.length;
+        }
+      }
+    });
+
+    if (maxNum === 0) return "LT01";
+    return `${currentPrefix}${(maxNum + 1).toString().padStart(currentPadding, "0")}`;
+  };
+
   const openAddThi = () => {
-    setFormThi({}); setIsEdit(false); setShowThiModal(true);
+    const nextId = generateNewExamId();
+    setFormThi({ maLichThi: nextId }); setIsEdit(false); setShowThiModal(true);
   };
   const openEditThi = (item: Lichthi) => {
     setFormThi({
@@ -269,18 +294,16 @@ export default function SchedulePage() {
             </div>
             <form onSubmit={handleSaveHoc} className="p-8 space-y-4">
               <div className="grid grid-cols-2 gap-4">
-                {isEdit && (
-                  <div className="space-y-1 col-span-2">
-                    <label className="text-sm font-semibold text-slate-700">Mã Lịch Học</label>
-                    <input required disabled={isEdit} value={formHoc.maLichHoc || ""} onChange={(e) => setFormHoc({ ...formHoc, maLichHoc: e.target.value })} className="w-full px-4 py-3 bg-slate-100 border border-slate-200 rounded-xl outline-none" />
-                  </div>
-                )}
-                {!isEdit && (
-                  <div className="space-y-1 col-span-2">
-                    <label className="text-sm font-semibold text-slate-700">Mã Lịch Học</label>
-                    <input required value={formHoc.maLichHoc || ""} onChange={(e) => setFormHoc({ ...formHoc, maLichHoc: e.target.value })} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500" />
-                  </div>
-                )}
+                <div className="space-y-1 col-span-2">
+                  <label className="text-sm font-semibold text-slate-700">Mã Lịch Học</label>
+                  <input 
+                    disabled 
+                    readOnly
+                    value={formHoc.maLichHoc || ""} 
+                    placeholder="Hệ thống tự động sinh..."
+                    className="w-full px-4 py-3 border border-slate-300 bg-slate-200 rounded-xl outline-none font-bold text-slate-500 cursor-not-allowed opacity-80" 
+                  />
+                </div>
                 <div className="space-y-1 col-span-2">
                   <label className="text-sm font-semibold text-slate-700">Mã Lớp Học Phần <span className="text-red-500">*</span></label>
                   <input required value={formHoc.maLopPhan || ""} onChange={(e) => setFormHoc({ ...formHoc, maLopPhan: e.target.value })} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500" />
@@ -321,7 +344,13 @@ export default function SchedulePage() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1 col-span-2">
                   <label className="text-sm font-semibold text-slate-700">Mã Lịch Thi <span className="text-red-500">*</span></label>
-                  <input required disabled={isEdit} value={formThi.maLichThi || ""} onChange={(e) => setFormThi({ ...formThi, maLichThi: e.target.value })} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500" />
+                  <input 
+                    disabled 
+                    readOnly
+                    value={formThi.maLichThi || ""} 
+                    placeholder="Đang sinh mã tự động..."
+                    className="w-full px-4 py-3 border border-slate-300 bg-slate-200 rounded-xl outline-none font-bold text-slate-500 cursor-not-allowed opacity-80" 
+                  />
                 </div>
                 <div className="space-y-1 col-span-2">
                   <label className="text-sm font-semibold text-slate-700">Mã Lớp Học Phần <span className="text-red-500">*</span></label>

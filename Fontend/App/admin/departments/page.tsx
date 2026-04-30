@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
 import Item_hien from "@/app/items_phu/item_cua_khoa/page_hien";
 import ItemHien_Nganh from "@/app/items_phu/item_cua_nganh/page_hien";
 import { getAll, deleteKhoa } from "@/ApiCall/KhoaApi";
-import { getAllNganh } from "@/ApiCall/NganhApi";
+import { getAllNganh, deleteNganh } from "@/ApiCall/NganhApi";
 type formKhoa = {
   maKhoa: string;
   tenKhoa: string;
@@ -198,8 +198,8 @@ export default function Page() {
                         await deleteKhoa(khoa.maKhoa);
                         if (selectedKhoa === khoa.maKhoa) setSelectedKhoa(null);
                         fetchKhoas();
-                      } catch {
-                        alert("Lỗi khi xóa khôa");
+                      } catch (error: any) {
+                        alert("Không thể xóa Khoa này: " + error.message);
                       }
                     }}
                   >
@@ -325,6 +325,16 @@ export default function Page() {
                     <button
                       className="p-2.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 transition-colors"
                       title="Xóa"
+                      onClick={async (e) => {
+                        e.stopPropagation();
+                        if (!confirm(`Bạn có chắc chắn muốn xóa ngành "${major.tenNganh}"?`)) return;
+                        try {
+                          await deleteNganh(major.maNganh);
+                          fetchNganhs();
+                        } catch (error: any) {
+                          alert("Không thể xóa Ngành này: " + error.message);
+                        }
+                      }}
                     >
                       <Trash2 size={16} />
                     </button>

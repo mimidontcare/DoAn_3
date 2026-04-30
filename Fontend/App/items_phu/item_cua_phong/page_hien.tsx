@@ -16,6 +16,7 @@ type Props = {
   onSuccess?: () => void;
   onCancel?: () => void;
   editData?: PhongHocData | null;
+  newId?: string;
 };
 
 export default function AddPhongHocModal({
@@ -23,11 +24,12 @@ export default function AddPhongHocModal({
   onSuccess,
   onCancel,
   editData,
+  newId,
 }: Props) {
   const isEdit = !!editData;
 
   const emptyForm: PhongHocData = {
-    maPhongHoc: "",
+    maPhongHoc: newId || "",
     TenPhong: "",
     sucChua: "",
     trangThai: "Sẵn sàng",
@@ -112,10 +114,10 @@ export default function AddPhongHocModal({
                 type="text"
                 name="maPhongHoc"
                 value={formData.maPhongHoc}
-                onChange={handleChange}
-                disabled={isEdit}
-                placeholder="VD: PH01, A101..."
-                className={`w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all ${isEdit ? "opacity-60 cursor-not-allowed" : ""}`}
+                disabled
+                readOnly
+                placeholder="Đang sinh mã tự động..."
+                className="w-full pl-11 pr-4 py-3 bg-slate-200 border border-slate-300 rounded-xl text-sm focus:outline-none font-bold text-slate-500 cursor-not-allowed opacity-80"
               />
               <Hash size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
             </div>

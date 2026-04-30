@@ -54,6 +54,54 @@ export default function Page() {
     fetchLopHPs();
   }, []);
 
+  const generateNewHCId = () => {
+    if (lopHCs.length === 0) return "LHC01";
+    let maxNum = 0;
+    let currentPrefix = "LHC";
+    let currentPadding = 2;
+
+    lopHCs.forEach(lop => {
+      if (!lop.MaLopHC) return;
+      const match = lop.MaLopHC.match(/^([a-zA-Z]*)(\d+)$/);
+      if (match) {
+        const numStr = match[2];
+        const num = parseInt(numStr, 10);
+        if (num > maxNum) {
+          maxNum = num;
+          currentPrefix = match[1];
+          currentPadding = numStr.length;
+        }
+      }
+    });
+
+    if (maxNum === 0) return "LHC01";
+    return `${currentPrefix}${(maxNum + 1).toString().padStart(currentPadding, "0")}`;
+  };
+
+  const generateNewHPId = () => {
+    if (lopHPs.length === 0) return "LHP01";
+    let maxNum = 0;
+    let currentPrefix = "LHP";
+    let currentPadding = 2;
+
+    lopHPs.forEach(lop => {
+      if (!lop.MaLopHocPhan) return;
+      const match = lop.MaLopHocPhan.match(/^([a-zA-Z]*)(\d+)$/);
+      if (match) {
+        const numStr = match[2];
+        const num = parseInt(numStr, 10);
+        if (num > maxNum) {
+          maxNum = num;
+          currentPrefix = match[1];
+          currentPadding = numStr.length;
+        }
+      }
+    });
+
+    if (maxNum === 0) return "LHP01";
+    return `${currentPrefix}${(maxNum + 1).toString().padStart(currentPadding, "0")}`;
+  };
+
   // Filters cho lớp học phần
   const [selectHK, setSelectHK] = useState("Học kỳ 1");
   const [selectYear, setSelectYear] = useState("2025-2026");
@@ -139,6 +187,7 @@ export default function Page() {
         <AddLopHCModal
           className="fixed inset-0 z-[200] flex items-center justify-center"
           editData={editHCData}
+          newId={generateNewHCId()}
           onSuccess={() => { setShowHCModal(false); setEditHCData(null); fetchLopHCs(); }}
           onCancel={() => { setShowHCModal(false); setEditHCData(null); }}
         />
@@ -148,6 +197,7 @@ export default function Page() {
         <AddLopHPModal
           className="fixed inset-0 z-[200] flex items-center justify-center"
           editData={editHPData}
+          newId={generateNewHPId()}
           onSuccess={() => { setShowHPModal(false); setEditHPData(null); fetchLopHPs(); }}
           onCancel={() => { setShowHPModal(false); setEditHPData(null); }}
         />
@@ -190,7 +240,7 @@ export default function Page() {
         </div>
 
         {/* Tabs */}
-        <div className="mb-6 overflow-hidden rounded-2xl border border-slate-100 bg-white/70 backdrop-blur-xl shadow-xl">
+        <div className="mb-6 overflow-hidden rounded-2xl border border-slate-100 bg-white/70 backdrop-blur-xl shadow-xl flex-1 flex flex-col min-h-0">
           <div className="flex border-b border-slate-200 bg-slate-50/80">
             <button
               onClick={() => setActiveTab("lopHC")}
@@ -218,10 +268,10 @@ export default function Page() {
           </div>
 
           {/* Content */}
-          <div className="p-6">
+          <div className="p-6 flex-1 flex flex-col min-h-0">
             {/* ===== TAB LỚP HÀNH CHÍNH ===== */}
             {activeTab === "lopHC" && (
-              <div className="space-y-6">
+              <div className="space-y-6 flex flex-col h-full min-h-0">
                 <div className="relative w-full md:w-1/2 lg:w-1/3">
                   <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
                   <input
@@ -231,7 +281,7 @@ export default function Page() {
                   />
                 </div>
 
-                <div className="overflow-x-auto rounded-2xl border border-slate-100 shadow-sm">
+                <div className="overflow-auto flex-1 rounded-2xl border border-slate-100 shadow-sm">
                   <table className="min-w-full divide-y divide-slate-100">
                     <thead className="bg-slate-50/80 backdrop-blur-md">
                       <tr>
@@ -239,7 +289,6 @@ export default function Page() {
                         <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Tên lớp</th>
                         <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Khóa</th>
                         <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Khoa</th>
-                        <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Cố vấn</th>
                         <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Sĩ số</th>
                         <th className="px-6 py-4 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">Thao tác</th>
                       </tr>
@@ -247,16 +296,15 @@ export default function Page() {
                     <tbody className="divide-y divide-slate-100/80 bg-white">
                       {lopHCs.length === 0 ? (
                         <tr>
-                          <td colSpan={7} className="px-6 py-12 text-center text-slate-400">Chưa có dữ liệu lớp hành chính</td>
+                          <td colSpan={6} className="px-6 py-12 text-center text-slate-400">Chưa có dữ liệu lớp hành chính</td>
                         </tr>
                       ) : (
                         lopHCs.map((lop) => (
                           <tr key={lop.MaLopHC} className="hover:bg-blue-50/40 transition-colors duration-200 group">
                             <td className="whitespace-nowrap px-6 py-4 text-sm font-semibold text-slate-800">{lop.MaLopHC}</td>
                             <td className="px-6 py-4 text-sm text-slate-700">{lop.TenLop}</td>
-                            <td className="px-6 py-4 text-sm text-slate-600">{lop.KhoaHoc || "-"}</td>
+                            <td className="px-6 py-4 text-sm text-slate-600">{lop.khoaHoc || lop.KhoaHoc || "-"}</td>
                             <td className="px-6 py-4 text-sm text-slate-600">{lop.NganhHoc || "-"}</td>
-                            <td className="px-6 py-4 text-sm text-slate-600">{lop.CoVan || "-"}</td>
                             <td className="px-6 py-4 text-sm text-slate-600">{lop.SISO ?? "-"}</td>
                             <td className="px-6 py-4 text-right">
                               <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
@@ -300,7 +348,7 @@ export default function Page() {
 
             {/* ===== TAB LỚP HỌC PHẦN ===== */}
             {activeTab === "lopHP" && (
-              <div className="space-y-6">
+              <div className="space-y-6 flex flex-col h-full min-h-0">
                 {/* Filters */}
                 <div ref={dropdownRef} className="flex flex-wrap gap-4">
                   {/* Học kỳ */}
@@ -411,7 +459,7 @@ export default function Page() {
                 </div>
 
                 {/* Table lớp học phần */}
-                <div className="overflow-x-auto rounded-2xl border border-slate-100 shadow-sm bg-white/70 backdrop-blur-xl">
+                <div className="overflow-auto flex-1 rounded-2xl border border-slate-100 shadow-sm bg-white/70 backdrop-blur-xl">
                   <table className="min-w-full divide-y divide-slate-100">
                     <thead className="bg-slate-50/80 backdrop-blur-md">
                       <tr>

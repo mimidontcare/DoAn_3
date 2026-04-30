@@ -51,8 +51,33 @@ export default function TeachersPage() {
     (t.maGiangVien && t.maGiangVien.toLowerCase().includes(searchTxt.toLowerCase()))
   );
 
+  const generateNewTeacherId = () => {
+    if (teachers.length === 0) return "GV01";
+    let maxNum = 0;
+    let currentPrefix = "GV";
+    let currentPadding = 2;
+
+    teachers.forEach(t => {
+      if (!t.maGiangVien) return;
+      const match = t.maGiangVien.match(/^([a-zA-Z]*)(\d+)$/);
+      if (match) {
+        const numStr = match[2];
+        const num = parseInt(numStr, 10);
+        if (num > maxNum) {
+          maxNum = num;
+          currentPrefix = match[1];
+          currentPadding = numStr.length;
+        }
+      }
+    });
+
+    if (maxNum === 0) return "GV01";
+    return `${currentPrefix}${(maxNum + 1).toString().padStart(currentPadding, "0")}`;
+  };
+
   const openAddModal = () => {
-    setFormData({});
+    const nextId = generateNewTeacherId();
+    setFormData({ maGiangVien: nextId });
     setIsEdit(false);
     setShowModal(true);
   };
@@ -224,12 +249,12 @@ export default function TeachersPage() {
                   </label>
                   <input
                     required
-                    disabled={isEdit}
+                    disabled
+                    readOnly
                     value={formData.maGiangVien || ""}
-                    onChange={(e) => setFormData({ ...formData, maGiangVien: e.target.value })}
                     type="text"
-                    className={`w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all ${isEdit ? 'opacity-60 cursor-not-allowed' : ''}`}
-                    placeholder="VD: GV01"
+                    className="w-full px-4 py-3 bg-slate-200 border border-slate-300 rounded-xl text-sm focus:outline-none font-bold text-slate-500 cursor-not-allowed opacity-80"
+                    placeholder="Đang sinh mã tự động..."
                   />
                 </div>
 

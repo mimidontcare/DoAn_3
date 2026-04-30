@@ -8,6 +8,10 @@ export const ApiFerch = async (endpoint, option = {}) => {
     },
     ...option,
   });
-  return await res.json();
+  
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data.message || data.sqlMessage || "Có lỗi xảy ra từ máy chủ");
+  }
+  return data;
 };
-// NOTE : CẦN làm login nữa mới xong được hoàn thành thêm sửa xóa

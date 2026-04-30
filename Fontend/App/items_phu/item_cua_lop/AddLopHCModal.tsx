@@ -9,8 +9,8 @@ type LopHCData = {
   TenLop: string;
   KhoaHoc: string;
   NganhHoc: string;
-  CoVan: string;
   SISO: string | number;
+  khoaHoc?: string;
 };
 
 type Props = {
@@ -18,6 +18,7 @@ type Props = {
   onSuccess?: () => void;
   onCancel?: () => void;
   editData?: LopHCData | null; // nếu có → chế độ sửa
+  newId?: string;
 };
 
 export default function AddLopHCModal({
@@ -25,19 +26,17 @@ export default function AddLopHCModal({
   onSuccess,
   onCancel,
   editData,
+  newId,
 }: Props) {
   const isEdit = !!editData;
 
-  const emptyForm: LopHCData = {
-    MaLopHC: "",
+  const [formData, setFormData] = useState<LopHCData>({
+    MaLopHC: newId || "",
     TenLop: "",
     KhoaHoc: "",
     NganhHoc: "",
-    CoVan: "",
     SISO: "",
-  };
-
-  const [formData, setFormData] = useState<LopHCData>(emptyForm);
+  });
 
   // Khi mở modal sửa → load dữ liệu vào form
   useEffect(() => {
@@ -45,15 +44,20 @@ export default function AddLopHCModal({
       setFormData({
         MaLopHC: editData.MaLopHC || "",
         TenLop: editData.TenLop || "",
-        KhoaHoc: editData.KhoaHoc || "",
+        KhoaHoc: editData.khoaHoc || editData.KhoaHoc || "",
         NganhHoc: editData.NganhHoc || "",
-        CoVan: editData.CoVan || "",
         SISO: editData.SISO?.toString() ?? "",
       });
     } else {
-      setFormData(emptyForm);
+      setFormData({
+        MaLopHC: newId || "",
+        TenLop: "",
+        KhoaHoc: "",
+        NganhHoc: "",
+        SISO: "",
+      });
     }
-  }, [editData]);
+  }, [editData, newId]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -123,10 +127,10 @@ export default function AddLopHCModal({
                 type="text"
                 name="MaLopHC"
                 value={formData.MaLopHC}
-                onChange={handleChange}
-                disabled={isEdit}
-                placeholder="VD: CNTT1"
-                className={`w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all ${isEdit ? "opacity-60 cursor-not-allowed" : ""}`}
+                disabled
+                readOnly
+                placeholder="Đang sinh mã tự động..."
+                className="w-full px-4 py-3 border border-slate-300 bg-slate-200 rounded-xl outline-none font-bold text-slate-500 cursor-not-allowed opacity-80"
               />
             </div>
 
@@ -176,21 +180,7 @@ export default function AddLopHCModal({
               />
             </div>
 
-            {/* Cố vấn */}
-            <div className="space-y-2">
-              <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
-                <User size={15} className="text-slate-500" />
-                Cố vấn học tập
-              </label>
-              <input
-                type="text"
-                name="CoVan"
-                value={formData.CoVan}
-                onChange={handleChange}
-                placeholder="VD: TS. Nguyễn Văn An"
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
-              />
-            </div>
+
 
             {/* Sĩ số */}
             <div className="space-y-2">

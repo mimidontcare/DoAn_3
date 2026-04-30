@@ -58,6 +58,28 @@ export default function RoomManagementPage() {
     room.TenPhong.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const generateNewRoomId = () => {
+    if (rooms.length === 0) return "PH01";
+    let maxNum = 0;
+    let currentPrefix = "PH";
+    let currentPadding = 2;
+
+    rooms.forEach(r => {
+      const match = r.maPhongHoc.match(/^([a-zA-Z]*)(\d+)$/);
+      if (match) {
+        const numStr = match[2];
+        const num = parseInt(numStr, 10);
+        if (num > maxNum) {
+          maxNum = num;
+          currentPrefix = match[1];
+          currentPadding = numStr.length;
+        }
+      }
+    });
+    if (maxNum === 0) return "PH01";
+    return `${currentPrefix}${(maxNum + 1).toString().padStart(currentPadding, "0")}`;
+  };
+
   return (
     <div className="relative p-6 w-full h-full bg-gradient-to-br from-slate-50 via-white to-blue-50 border border-slate-100 rounded-2xl flex flex-col overflow-hidden shadow-sm">
       {/* Modals */}
@@ -65,6 +87,7 @@ export default function RoomManagementPage() {
         <AddPhongHocModal
           className="fixed inset-0 z-[200] flex items-center justify-center"
           editData={editData}
+          newId={generateNewRoomId()}
           onSuccess={() => {
             setShowModal(false);
             setEditData(null);

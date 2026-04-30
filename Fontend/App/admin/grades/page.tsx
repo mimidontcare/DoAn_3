@@ -45,8 +45,33 @@ export default function GradesPage() {
     d.MaMonHoc?.toLowerCase().includes(searchTxt.toLowerCase())
   );
 
+  const generateNewGradeId = () => {
+    if (data.length === 0) return "BD01";
+    let maxNum = 0;
+    let currentPrefix = "BD";
+    let currentPadding = 2;
+
+    data.forEach(d => {
+      if (!d.MaBD) return;
+      const match = d.MaBD.match(/^([a-zA-Z]*)(\d+)$/);
+      if (match) {
+        const numStr = match[2];
+        const num = parseInt(numStr, 10);
+        if (num > maxNum) {
+          maxNum = num;
+          currentPrefix = match[1];
+          currentPadding = numStr.length;
+        }
+      }
+    });
+
+    if (maxNum === 0) return "BD01";
+    return `${currentPrefix}${(maxNum + 1).toString().padStart(currentPadding, "0")}`;
+  };
+
   const openAdd = () => {
-    setFormData({}); 
+    const nextId = generateNewGradeId();
+    setFormData({ MaBD: nextId }); 
     setIsEdit(false); 
     setShowModal(true);
   };
@@ -226,12 +251,11 @@ export default function GradesPage() {
                 <div className="space-y-1 col-span-2 md:col-span-1">
                   <label className="text-sm font-semibold text-slate-700">Mã Bảng Điểm <span className="text-red-500">*</span></label>
                   <input 
-                    required={!isEdit} 
-                    disabled={isEdit} 
+                    disabled 
+                    readOnly
                     value={formData.MaBD || ""} 
-                    onChange={(e) => setFormData({...formData, MaBD: e.target.value})} 
-                    placeholder="VD: BD001"
-                    className={`w-full px-4 py-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 ${isEdit ? "bg-slate-100" : "bg-slate-50"}`} 
+                    placeholder="Đang sinh mã tự động..."
+                    className="w-full px-4 py-3 border border-slate-300 bg-slate-200 rounded-xl outline-none font-bold text-slate-500 cursor-not-allowed opacity-80" 
                   />
                 </div>
 

@@ -11,7 +11,7 @@ const Lophanhchinh = {
 
   create: (data, callback) => {
     db.query("INSERT INTO lophanhchinh (MaLopHC, NganhHoc, SISO, TenLop, KhoaHoc, CoVan) VALUES (?, ?, ?, ?, ?, ?)",
-      [data.MaLopHC, data.NganhHoc, data.SISO, data.TenLop, data.KhoaHoc, data.CoVan],
+      [data.MaLopHC, data.NganhHoc, data.SISO, data.TenLop, data.KhoaHoc || data.khoaHoc || null, data.CoVan || null],
       callback
     );
   },
@@ -19,7 +19,7 @@ const Lophanhchinh = {
   update: (id, data, callback) => {
     db.query(
       "UPDATE lophanhchinh SET NganhHoc=?, SISO=?, TenLop=?, KhoaHoc=?, CoVan=? WHERE MaLopHC=?",
-      [data.NganhHoc, data.SISO, data.TenLop, data.KhoaHoc, data.CoVan, id],
+      [data.NganhHoc, data.SISO, data.TenLop, data.KhoaHoc || data.khoaHoc || null, data.CoVan || null, id],
       callback
     );
   },

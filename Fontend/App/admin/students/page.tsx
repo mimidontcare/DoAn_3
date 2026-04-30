@@ -22,6 +22,8 @@ type Sinhvien = {
 export default function StudentsPage() {
   const [students, setStudents] = useState<Sinhvien[]>([]);
   const [searchTxt, setSearchTxt] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 50;
 
   // Modal states
   const [showModal, setShowModal] = useState(false);
@@ -48,13 +50,53 @@ export default function StudentsPage() {
     fetchStudents();
   }, []);
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTxt]);
+
   const displayedStudents = students.filter(s =>
     (s.Hoten && s.Hoten.toLowerCase().includes(searchTxt.toLowerCase())) ||
     (s.maSV && s.maSV.toLowerCase().includes(searchTxt.toLowerCase()))
   );
 
+  const totalPages = Math.ceil(displayedStudents.length / itemsPerPage);
+  const paginatedStudents = displayedStudents.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const generateNewStudentId = () => {
+    if (students.length === 0) return "SV001";
+    
+    let maxNum = 0;
+    let currentPrefix = "SV";
+    let currentPadding = 3;
+
+    students.forEach(s => {
+      // Tìm mã có dạng Tiền tố chữ + Hậu tố số (VD: SV001, CNTT05)
+      const match = s.maSV.match(/^([a-zA-Z]*)(\d+)$/);
+      if (match) {
+        const prefix = match[1];
+        const numStr = match[2];
+        const num = parseInt(numStr, 10);
+        
+        if (num > maxNum) {
+          maxNum = num;
+          currentPrefix = prefix;
+          currentPadding = numStr.length;
+        }
+      }
+    });
+
+    if (maxNum === 0) return "SV001";
+
+    const nextNum = maxNum + 1;
+    return `${currentPrefix}${nextNum.toString().padStart(currentPadding, "0")}`;
+  };
+
   const openAddModal = () => {
-    setFormData({});
+    const nextId = generateNewStudentId();
+    setFormData({ maSV: nextId });
     setIsEdit(false);
     setShowModal(true);
   };
@@ -152,7 +194,7 @@ export default function StudentsPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100/80">
-              {displayedStudents.map((student) => (
+              {paginatedStudents.map((student, index) => (
                 <tr key={student.maSV} className="hover:bg-blue-50/40 transition-colors duration-200 group">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-4">
@@ -213,6 +255,33 @@ export default function StudentsPage() {
             </tbody>
           </table>
         </div>
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-between px-6 py-4 border-t border-slate-200 bg-slate-50/50">
+            <span className="text-sm text-slate-500">
+              Hiển thị từ {(currentPage - 1) * itemsPerPage + 1} đến {Math.min(currentPage * itemsPerPage, displayedStudents.length)} trong tổng số {displayedStudents.length} sinh viên
+            </span>
+            <div className="flex gap-2">
+              <button 
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage(p => p - 1)}
+                className="px-4 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
+              >
+                Trước
+              </button>
+              <span className="px-4 py-2 text-sm font-semibold text-blue-600 bg-blue-50 border border-blue-100 rounded-lg">
+                Trang {currentPage} / {totalPages}
+              </span>
+              <button 
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage(p => p + 1)}
+                className="px-4 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
+              >
+                Sau
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* MODAL (Thêm/Sửa Sinh Viên) */}
@@ -244,12 +313,12 @@ export default function StudentsPage() {
                   </label>
                   <input
                     required
-                    disabled={isEdit}
+                    disabled
+                    readOnly
                     value={formData.maSV || ""}
-                    onChange={(e) => setFormData({ ...formData, maSV: e.target.value })}
                     type="text"
-                    className={`w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all ${isEdit ? 'opacity-60 cursor-not-allowed' : ''}`}
-                    placeholder="VD: CNTT01"
+                    className="w-full px-4 py-3 bg-slate-200 border border-slate-300 rounded-xl text-sm focus:outline-none font-bold text-slate-500 cursor-not-allowed opacity-80"
+                    placeholder="Đang sinh mã tự động..."
                   />
                 </div>
 

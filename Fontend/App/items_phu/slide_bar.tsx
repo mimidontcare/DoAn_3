@@ -10,6 +10,7 @@ import {
   Settings,
   LogOut,
   DoorOpen,
+  Book,
 } from "lucide-react";
 
 export const SIDEBAR_MENU = [
@@ -22,6 +23,7 @@ export const SIDEBAR_MENU = [
         icon: LayoutDashboard,
       },
       { name: "Khoa & Ngành", path: "/admin/departments", icon: Building2 },
+      { name: "Môn học", path: "/admin/subjects", icon: Book },
       { name: "Lớp học", path: "/admin/classes", icon: School },
       { name: "Phòng học", path: "/admin/rooms", icon: DoorOpen },
       { name: "Sinh viên", path: "/admin/students", icon: Users },

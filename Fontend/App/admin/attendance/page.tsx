@@ -210,12 +210,11 @@ export default function AttendancePage() {
                 <div className="space-y-1 col-span-2">
                   <label className="text-sm font-semibold text-slate-700">Mã Điểm Danh</label>
                   <input 
-                    required={isEdit} 
-                    disabled={isEdit} 
+                    disabled 
+                    readOnly
                     value={formData.maDiemDanh || ""} 
-                    onChange={(e) => setFormData({...formData, maDiemDanh: e.target.value})} 
-                    placeholder={isEdit ? "" : "Tự động hoặc tự định nghĩa"}
-                    className={`w-full px-4 py-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 ${isEdit ? "bg-slate-100" : "bg-slate-50"}`} 
+                    placeholder="Hệ thống tự động sinh..."
+                    className="w-full px-4 py-3 border border-slate-300 bg-slate-200 rounded-xl outline-none font-bold text-slate-500 cursor-not-allowed opacity-80" 
                   />
                 </div>
 
