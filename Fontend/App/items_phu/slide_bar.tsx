@@ -41,3 +41,27 @@ export const SIDEBAR_MENU = [
     ],
   },
 ] as const;
+
+export const SIDEBAR_MENU_GIANGVIEN = [
+  {
+    group: "Chức năng",
+    items: [
+      {
+        name: "Bảng điều khiển",
+        path: "/giangvien",
+        icon: LayoutDashboard,
+      },
+      { name: "Quản lý lớp", path: "/giangvien/quan-ly-lop", icon: School },
+      { name: "Lịch dạy", path: "/giangvien/lich-day", icon: Calendar },
+      { name: "Điểm danh", path: "/giangvien/diem-danh", icon: ClipboardCheck },
+      { name: "Quản lý điểm", path: "/giangvien/quan-ly-diem", icon: BarChart3 },
+    ],
+  },
+  {
+    group: "Hệ thống",
+    items: [
+      { name: "Cài đặt", path: "/settings", icon: Settings },
+      { name: "Đăng xuất", path: "/htmltemplate", icon: LogOut },
+    ],
+  },
+] as const;
