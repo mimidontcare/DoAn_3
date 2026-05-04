@@ -19,9 +19,19 @@ export default function LoginPage() {
       const res = await login({ email, password });
 
       if (res?.token) {
-        // Đăng nhập thành công — token đã được lưu trong loginApi.js
+        // Đăng nhập thành công
+        const role = String(res.user?.loai).toLowerCase();
+        
         alert("Đăng nhập thành công!");
-        router.push("/admin/dashboard");
+        
+        // Điều hướng dựa trên role
+        if (role === "admin" || role === "1") {
+          router.push("/admin/dashboard");
+        } else if (role === "giangvien" || role === "2") {
+          router.push("/giangvien"); // Điều hướng đến trang giảng viên đã tạo
+        } else {
+          router.push("/htmltemplate"); // Sinh viên hoặc role khác
+        }
       } else {
         // Đăng nhập thất bại — backend trả message lỗi
         alert("Đăng nhập thất bại: " + (res?.message || "Sai email hoặc mật khẩu"));

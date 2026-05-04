@@ -11,6 +11,9 @@ export default async function login({ email, password }) {
 
   if (data.token) {
     localStorage.setItem("token", data.token);
+    if (data.user && data.user.loai !== undefined) {
+      localStorage.setItem("role", String(data.user.loai).toLowerCase());
+    }
   }
 
   return data;
