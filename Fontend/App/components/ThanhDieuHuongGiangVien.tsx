@@ -36,6 +36,14 @@ const ThanhDieuHuongGiangVien = ({ className }: Props) => {
                 <Link
                   key={item.path}
                   href={item.path}
+                  onClick={(e) => {
+                    if (item.name === "Đăng xuất") {
+                      e.preventDefault();
+                      localStorage.removeItem("token");
+                      localStorage.removeItem("role");
+                      window.location.href = "/login";
+                    }
+                  }}
                   className={`flex items-center gap-3 px-3 py-2 rounded-lg transition
                     ${
                       isActive

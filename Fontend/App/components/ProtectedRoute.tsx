@@ -35,6 +35,8 @@ export default function ProtectedRoute({ children, allowedRoles }: ProtectedRout
         router.push("/admin/dashboard");
       } else if (role === "giangvien" || role === "2") {
         router.push("/giangvien");
+      } else if (role === "sinhvien" || role === "3") {
+        router.push("/student");
       } else {
         router.push("/htmltemplate");
       }

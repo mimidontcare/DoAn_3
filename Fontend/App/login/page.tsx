@@ -29,8 +29,10 @@ export default function LoginPage() {
           router.push("/admin/dashboard");
         } else if (role === "giangvien" || role === "2") {
           router.push("/giangvien"); // Điều hướng đến trang giảng viên đã tạo
+        } else if (role === "sinhvien" || role === "3") {
+          router.push("/student"); // Điều hướng đến trang sinh viên
         } else {
-          router.push("/htmltemplate"); // Sinh viên hoặc role khác
+          router.push("/htmltemplate"); // Role khác
         }
       } else {
         // Đăng nhập thất bại — backend trả message lỗi
