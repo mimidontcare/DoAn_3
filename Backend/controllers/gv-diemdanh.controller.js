@@ -9,7 +9,7 @@ exports.getLopByGiangVien = (req, res) => {
 
   const sql = `
     SELECT lhp.maLopHP, lhp.tenLop, lhp.MaLopHocPhan, lhp.MaMonHoc, lhp.maGiangVien,
-           lhp.soLuongSinhVien,
+           lhp.soLuongSinhVien, lhp.ThoigianMo, lhp.thoigianDong,
            mh.tenMonHoc, mh.soTiet
     FROM giangvien gv
     JOIN lophocphan lhp ON gv.maGiangVien = lhp.maGiangVien

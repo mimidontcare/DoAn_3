@@ -13,7 +13,8 @@ import {
 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import AddLopHPModal from "@/app/items_phu/item_cua_lop/AddLopHPModal";
-import { getAllLopHP, deleteLopHP } from "@/ApiCall/LopHPApi";
+import { deleteLopHP } from "@/ApiCall/LopHPApi";
+import { getLopGiangDay } from "@/ApiCall/GvDiemdanhApi";
 
 export default function QuanLyLopGiangVien() {
   const [showHPModal, setShowHPModal] = useState(false);
@@ -23,11 +24,8 @@ export default function QuanLyLopGiangVien() {
 
   const fetchLopHPs = async () => {
     try {
-      const data = await getAllLopHP();
+      const data = await getLopGiangDay();
       if (Array.isArray(data)) {
-        // Here we could filter by giang vien ID if we had auth context
-        // const giangVienId = "GV001";
-        // setLopHPs(data.filter(lop => lop.maGiangVien === giangVienId));
         setLopHPs(data);
       }
     } catch (err: any) {
@@ -274,8 +272,8 @@ export default function QuanLyLopGiangVien() {
                           <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700 shadow-sm border border-slate-200">
                             {course.ThoigianMo
                               ? new Date(course.ThoigianMo).toLocaleDateString(
-                                  "vi-VN"
-                                )
+                                "vi-VN"
+                              )
                               : "N/A"}
                           </span>
                         </td>
@@ -287,11 +285,10 @@ export default function QuanLyLopGiangVien() {
                         </td>
                         <td className="whitespace-nowrap px-6 py-4">
                           <span
-                            className={`inline-flex rounded-full px-3 py-1.5 text-xs font-semibold border ${
-                              course.soLuongSinhVien > 0
-                                ? "bg-emerald-100/80 text-emerald-700 border-emerald-200"
-                                : "bg-slate-100/80 text-slate-700 border-slate-200"
-                            }`}
+                            className={`inline-flex rounded-full px-3 py-1.5 text-xs font-semibold border ${course.soLuongSinhVien > 0
+                              ? "bg-emerald-100/80 text-emerald-700 border-emerald-200"
+                              : "bg-slate-100/80 text-slate-700 border-slate-200"
+                              }`}
                           >
                             {course.soLuongSinhVien > 0 ? "ĐANG MỞ" : "ĐÃ ĐÓNG"}
                           </span>
@@ -345,7 +342,7 @@ export default function QuanLyLopGiangVien() {
                 </tbody>
               </table>
             </div>
-            
+
             {/* Pagination */}
             <div className="flex flex-col items-center justify-between gap-4 text-sm text-slate-600 sm:flex-row">
               <div>
