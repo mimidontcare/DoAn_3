@@ -33,6 +33,7 @@ app.use("/api/lichthi", require("./routes/lichthi.route"));
 app.use("/api/nganh", require("./routes/nganh.route"));
 app.use("/api/giangvien", require("./routes/giangvien.route"));
 app.use("/api/daudiem", require("./routes/daudiem.route"));
+app.use("/api/gv-diemdanh", require("./routes/gv-diemdanh.route"));
 
 app.listen(5000, () => {
   console.log("🚀 Server running on port 5000");
